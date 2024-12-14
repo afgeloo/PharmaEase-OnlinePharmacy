@@ -167,7 +167,7 @@ DRAFTS
 
 -- Sample data for `product_images`
 INSERT INTO product_images (product_id, image_name_1, image_name_2, image_name_3) VALUES
-(1, '/PharmaEase/assets/ProductPics/PRESCRIPTION MEDICINES/Rx_ Bactiv 625mg Tablet (2).png');
+(1, '/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion.png', '/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion (2).png', '/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion (3).png');
 
 -- Sample data for `cart_items`
 INSERT INTO cart_items (user_id, product_id, quantity, subtotal_price, total_price) VALUES
