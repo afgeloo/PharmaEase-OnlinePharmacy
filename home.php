@@ -123,10 +123,7 @@ $result = $conn->query($sql);
 
                         <?php if (!empty($row['category_name'])): ?>
                         <span><?php echo htmlspecialchars($row['category_name']); ?></span>
-                        <?php endif; ?>
-                
-                        <br /><br />
-                
+                        <?php endif; ?>                
                 
                         <div class="price-big">
                             ₱<?php echo number_format($row['product_price'], 2); ?>

@@ -218,3 +218,35 @@ tr:hover {
         gap: 10px;
     }
 }
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.admin-form label {
+    margin-top: 10px;
+}
+
+.admin-form input[type="text"],
+.admin-form input[type="number"],
+.admin-form select,
+.admin-form textarea {
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.admin-form button {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-form button:hover {
+    background-color: #45a049;
+}
