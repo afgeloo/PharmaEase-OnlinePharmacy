@@ -132,6 +132,7 @@ INSERT INTO product_categories (category_name) VALUES
 INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('RiteMed Cetirizine 10 mg Tablet', 'Allergy & Histamine', 
 'Antihistamine. Allergic rhinitis such as sneezing; runny, itchy nose; and itchy, watery eyes. Skin symptoms of allergy such as itch and rash',
+
 16.00, 1, 'Mercury Drugs');
 
 INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
@@ -158,6 +159,35 @@ INSERT INTO products (product_name, product_label, product_description, product_
 ('Bactiv 625mg Tablet', 'Antibacterial & Anti-Infectives', 
 'Co- Amoxiclav, 625 mg, Antibacterial, 1 pc',
 45.00, 1, 'Mercury Drugs');
+
+=======
+16.00, 1
+);
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('Alnix Plus 5mg 60ml Syrup', 'Allergy & Histamine', 
+'Alnix plus is used for the relief of clogged nose; sneezing; runny, itchy nose; and itchy, watery eyes associated with allergic rhinitis. This medicine should be taken orally (by mouth) every 12 hours, or, as directed by a doctor.',
+307.75, 1
+);
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('Claricort 5mg / 250mcg Tablet', 'Allergy & Histamine', 
+'Loratadine Betamethasone, 5 mg / 250 mcg, 1 pc Tablet',
+307.75, 1
+);
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('RiteMed Doxycycline 100mg Capsule', 'Antibacterial & Anti-Infectives', 
+'Doxycycline, 100 mg, Tetracycline, 1 pc Capsule',
+45.00, 1
+);
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('Fixcom 2 150 mg / 75 mg mg Tablet', 'Antibacterial & Anti-Infectives', 
+'Rifampicin & Isoniazid, 150 mg / 75 mg, Anti - Tuberculosis, 1 pc.',
+45.00, 1
+);
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('Bactiv 625mg Tablet', 'Antibacterial & Anti-Infectives', 
+'Co- Amoxiclav, 625 mg, Antibacterial, 1 pc',
+45.00, 1
+);
 
 -----------------------------------------------------------------------------------
 
