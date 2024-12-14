@@ -42,7 +42,8 @@ CREATE TABLE registered_users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,          
     first_name VARCHAR(100) NOT NULL,           
     last_name VARCHAR(100) NOT NULL,            
-    birthday DATE NOT NULL,                     
+    birthday DATE NOT NULL, 
+    age INT NOT NULL,                    
     contact_number VARCHAR(11) NOT NULL,        
     email VARCHAR(255) NOT NULL UNIQUE,         
     address TEXT NOT NULL,                       
@@ -62,17 +63,18 @@ CREATE TABLE product_categories (
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,        
     product_name VARCHAR(255) NOT NULL, 
+    category_id INT NOT NULL,
     product_label VARCHAR(255) NOT NULL,            
     product_description TEXT NOT NULL,               
-    product_price DECIMAL(10, 2) NOT NULL,           
-    category_id INT NOT NULL,                           
+    product_price DECIMAL(10, 2) NOT NULL,
+    store VARCHAR(255),
     FOREIGN KEY (category_id) REFERENCES product_categories(category_id) ON DELETE CASCADE
 );
 
 CREATE TABLE product_images (
     image_id INT AUTO_INCREMENT PRIMARY KEY,         
     product_id INT NOT NULL,                         
-    image_name VARCHAR(255) NOT NULL,               
+    image_name VARCHAR(255) NOT NULL,                
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
 
@@ -92,14 +94,15 @@ CREATE TABLE orders (
     user_id INT NOT NULL,                            
     order_status VARCHAR(50) NOT NULL,              
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
-    delivery_date DATETIME DEFAULT NULL,  
+    delivery_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     FOREIGN KEY (user_id) REFERENCES registered_users(user_id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,   
     order_id INT NOT NULL,                         
-    product_id INT NOT NULL,                         
+    product_id INT NOT NULL,                        
     quantity INT NOT NULL,                           
     subtotal_price DECIMAL(10, 2) NOT NULL,          
     total_price DECIMAL(10, 2) NOT NULL,             
@@ -112,8 +115,8 @@ CREATE TABLE order_items (
 VALUES
 
 -- Sample data for `registered_users`
-INSERT INTO registered_users (first_name, last_name, birthday, contact_number, email, address, username, password, is_verified, code_verification) VALUES
-('John', 'Doe', '1990-05-15', '09171234567', 'john.doe@example.com', '123 Main St, City A', 'johndoe', 'password123', 1, NULL);
+INSERT INTO registered_users (first_name, last_name, birthday, age, contact_number, email, address, username, password, is_verified, code_verification) VALUES
+('John', 'Doe', '1990-05-15', 24, '09171234567', 'john.doe@example.com', '123 Main St, City A', 'johndoe', 'password123', 1, NULL);
 
 -- Sample data for `product_categories`
 INSERT INTO product_categories (category_name) VALUES
@@ -126,36 +129,36 @@ INSERT INTO product_categories (category_name) VALUES
 ('Sexual Wellness');
 
 -- Sample data for `products`
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('RiteMed Cetirizine 10 mg Tablet', 'Allergy & Histamine', 
 'Antihistamine. Allergic rhinitis such as sneezing; runny, itchy nose; and itchy, watery eyes. Skin symptoms of allergy such as itch and rash',
-16.00, 1
-);
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+16.00, 1, 'Mercury Drugs');
+
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('Alnix Plus 5mg 60ml Syrup', 'Allergy & Histamine', 
 'Alnix plus is used for the relief of clogged nose; sneezing; runny, itchy nose; and itchy, watery eyes associated with allergic rhinitis. This medicine should be taken orally (by mouth) every 12 hours, or, as directed by a doctor.',
-307.75, 1
-);
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+307.75, 1, 'Mercury Drugs');
+
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('Claricort 5mg / 250mcg Tablet', 'Allergy & Histamine', 
 'Loratadine Betamethasone, 5 mg / 250 mcg, 1 pc Tablet',
-307.75, 1
-);
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+307.75, 1, 'Mercury Drugs');
+
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('RiteMed Doxycycline 100mg Capsule', 'Antibacterial & Anti-Infectives', 
 'Doxycycline, 100 mg, Tetracycline, 1 pc Capsule',
-45.00, 1
-);
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+45.00, 1, 'Mercury Drugs');
+
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('Fixcom 2 150 mg / 75 mg mg Tablet', 'Antibacterial & Anti-Infectives', 
 'Rifampicin & Isoniazid, 150 mg / 75 mg, Anti - Tuberculosis, 1 pc.',
-45.00, 1
-);
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+45.00, 1, 'Mercury Drugs');
+
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
 ('Bactiv 625mg Tablet', 'Antibacterial & Anti-Infectives', 
 'Co- Amoxiclav, 625 mg, Antibacterial, 1 pc',
-45.00, 1
-);
+45.00, 1, 'Mercury Drugs');
+
 -----------------------------------------------------------------------------------
 
 DRAFTS
