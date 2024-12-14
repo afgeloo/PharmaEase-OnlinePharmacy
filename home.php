@@ -120,7 +120,6 @@ $result = $conn->query($sql);
                     <!-- Product Info -->
                     <div class="info-large">
                     <h4><?php echo htmlspecialchars($row['product_name']); ?></h4>
-                    <span><?php echo htmlspecialchars($row['category_name']); ?></span>
 
                         <?php if (!empty($row['category_name'])): ?>
                         <span><?php echo htmlspecialchars($row['category_name']); ?></span>
