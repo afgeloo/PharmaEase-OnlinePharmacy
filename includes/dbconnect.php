@@ -17,4 +17,12 @@ try {
 } catch (\PDOException $e) {
      die('Database connection failed: ' . $e->getMessage()); // Handle connection errors
 }
+
+// Add MySQLi connection
+$conn = new mysqli($host, $user, $pass, $db);
+
+if ($conn->connect_error) {
+    die('MySQLi Connection failed: ' . $conn->connect_error);
+}
+
 ?>
