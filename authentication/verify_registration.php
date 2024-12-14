@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['verify'])) {
     } elseif (!preg_match("/^\d{6}$/", $verificationCode)) {
         $verificationError = "Invalid verification code format";
     } else {
-        $stmt = $conn->prepare("SELECT id FROM registered_users WHERE code_verification = ? AND is_verified = 0");
+        $stmt = $conn->prepare("SELECT user_id FROM registered_users WHERE code_verification = ? AND is_verified = 0");
         $stmt->bind_param("i", $verificationCode);
         $stmt->execute();
         $stmt->store_result();
