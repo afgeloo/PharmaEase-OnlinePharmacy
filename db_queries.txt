@@ -16,3 +16,38 @@ CREATE TABLE registered_users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Record creation time
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Record update time
 );
+
+// 
+products -> linked to product_categories and product_images
+    - product_id
+    - product_name
+    - product_description
+    - product_price
+    - category_name (from product_categories)
+
+product_categories
+    - category_id
+    - category_name
+
+product_images
+    - product_id (from products)
+    - image_name
+
+cart_items -> linked to registered_users and products
+    - cart_item_id
+    - user_id (from registered_users)
+    - product_id (from products)
+    - quantity
+    - subtotal_price
+    - total_price
+
+orders -> linked to registered_users and products
+    - order_id
+    - user_id (from registered_users)
+    - product_id (from products)
+    - quantity
+    - subtotal_price
+    - total_price
+    - order_status
+    - order_date
+    - delivery_date
