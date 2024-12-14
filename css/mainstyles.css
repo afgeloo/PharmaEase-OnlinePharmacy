@@ -1,0 +1,162 @@
+.page-transition .div {
+    position: fixed;
+    background-color: #88C273; 
+    height: 100%;
+    bottom: 100%;
+    width: 25%;
+    z-index: 1000;
+}
+
+.page-transition .div:nth-child(1) {
+    left: 0px;
+}
+
+.page-transition .div:nth-child(2) {
+    left: 25%;
+}
+
+.page-transition .div:nth-child(3) {
+    left: 50%;
+}
+
+.page-transition .div:nth-child(4) {
+    left: 75%;
+}
+
+.preload {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001; 
+}
+
+.preload li {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+* {
+    font-family: "Varela Round", sans-serif;
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    max-height: 100vh;
+    background-color: #FFF9F0;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+.img {
+    max-width: 50%;
+}
+
+img {
+    max-width: 100%;
+}
+
+.form {
+    min-width: 50vw;
+    padding: 20px;
+    background-color: #FFF9F0;
+    box-sizing: border-box;
+}
+
+.logo-img {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 50%;
+    border-radius: 5px;
+}
+
+h2 {
+    text-align: center;
+}
+
+input[type="text"], input[type="password"] {
+    display: block;
+    width: 80%;
+    margin: 20px auto;
+    padding: 8px;
+    background: #ffffff;
+    border: 0px solid;
+    border-radius: 5px;
+}
+
+.check {
+    margin: auto;
+    padding: 10px 0px;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+
+a {
+    text-decoration: none;
+    color: #6B7EB1;
+}
+
+.form p {
+    width: 80%;
+    margin: 10px auto;
+}
+
+@media only screen and (max-width: 670px) {
+    img {
+        display: none;
+    }
+    .form {
+        width: 100%;
+    }
+}
+
+/*button animations*/
+.button {
+    display: block;
+    margin: 10px auto;
+    width: 80%;
+    background: #88c273;
+    padding: 8px;
+    border: 0px;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer; /* Ensure cursor changes to pointer */
+    transition: background-color 1.2s ease; /* Slow down the transition */
+    position: relative; /* Ensure the button is positioned relative for the pseudo-element */
+    overflow: hidden; /* Ensure the pseudo-element is contained within the button */
+}
+
+.button span {
+    position: relative; /* Ensure the text is positioned relative */
+    z-index: 1; /* Ensure the text is above the pseudo-element */
+}
+
+.button:after {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -75px;
+    width: 50px;
+    height: 155px;
+    background: #fff;
+    opacity: 0.2;
+    transform: rotate(35deg);
+    transition: all 2s cubic-bezier(0.19, 1, 0.22, 1); /* Slow down the transition */
+    z-index: 0; /* Ensure the pseudo-element is below the text */
+}
+
+.button:hover:after {
+    left: 120%;
+    transition: all 2s cubic-bezier(0.19, 1, 0.22, 1); /* Slow down the transition */
+}
