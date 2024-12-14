@@ -4,10 +4,11 @@ session_start();
 require 'includes/dbconnect.php';
 
 // Updated SQL query with joins
-$sql = "SELECT p.product_id, p.product_name, p.product_description, p.product_price, c.category_name, pi.image_name
+$sql = "SELECT p.product_id, p.product_name, p.category_id, p.product_description, p.product_price, p.store, c.category_name, pi.image_name
         FROM products p
         JOIN product_categories c ON p.category_id = c.category_id
         LEFT JOIN product_images pi ON p.product_id = pi.product_id";
+
 $result = $conn->query($sql);
 
 ?>
@@ -112,8 +113,8 @@ $result = $conn->query($sql);
                     <h4><?php echo htmlspecialchars($row['product_name']); ?></h4>
                     <span><?php echo htmlspecialchars($row['category_name']); ?></span>
 
-                        <?php if (!empty($row['label'])): ?>
-                        <span><?php echo htmlspecialchars($row['label']); ?></span>
+                        <?php if (!empty($row['category_name'])): ?>
+                        <span><?php echo htmlspecialchars($row['category_name']); ?></span>
                         <?php endif; ?>
 
                         <br />
@@ -161,10 +162,12 @@ $result = $conn->query($sql);
                         </div>
 
                         <form action="../cart/cart2.php" method="post">
-                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['id']); ?>">
-                            <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['name']); ?>">
-                            <input type="hidden" name="product_description" value="<?php echo htmlspecialchars($row['description']); ?>">
-                            <input type="hidden" name="product_price" value="<?php echo htmlspecialchars($row['price']); ?>">
+                            <input type="hidden" name="product_image" value="<?php echo htmlspecialchars($images[0]); ?>">
+                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
+                            <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>">
+                            <input type="hidden" name="category_name" value="<?php echo htmlspecialchars($row['category_name']); ?>">
+                            <input type="hidden" name="product_description" value="<?php echo htmlspecialchars($row['product_description']); ?>">
+                            <input type="hidden" name="product_price" value="<?php echo htmlspecialchars($row['product_price']); ?>">
                             <input type="hidden" name="product_quantity" value="1"> <!-- Default quantity -->
                             <button type="submit" name="add_to_cart" class="add-cart-large">Add To Cart</button>
                         </form>
@@ -186,16 +189,16 @@ $result = $conn->query($sql);
                             ?>
                             <div class="image_overlay"></div>
                             <div class="view_gallery">View gallery</div>
-                            <a href="productview.php?id=<?php echo $row['id']; ?>" class="view_details">View details</a>
+                            <a href="productview.php?id=<?php echo $row['product_id']; ?>" class="view_details">View details</a>
                             <div class="stats">
                                 <div class="stats-container">
-                                    <span class="product_price">₱<?php echo number_format($row['price'], 2); ?></span>
-                                    <span class="product_name"><?php echo htmlspecialchars($row['name']); ?></span>
+                                    <span class="product_price">₱<?php echo number_format($row['product_price'], 2); ?></span>
+                                    <span class="product_name"><?php echo htmlspecialchars($row['product_name']); ?></span>
                                     <br>
-                                    <span class="product_label"><?php echo htmlspecialchars($row['label']); ?></span>
+                                    <span class="category_name"><?php echo htmlspecialchars($row['category_name']); ?></span>
                                     <div class="product-options">
                                     <br /><strong>DESCRIPTION</strong>
-                                        <span><?php echo htmlspecialchars($row['description']); ?></span>
+                                        <span><?php echo htmlspecialchars($row['product_description']); ?></span>
                                         <strong>STORE</strong>
                                         <div class="colors">
                                             <span><?php echo htmlspecialchars($row['store']); ?></span>
