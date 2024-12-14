@@ -3,10 +3,12 @@ session_start();
 
 require 'includes/dbconnect.php';
 
-$sql = "SELECT p.product_id, p.product_name, p.product_label, p.product_description, p.product_price, c.category_name, pi.image_name
+// Updated SQL query with joins
+$sql = "SELECT p.product_id, p.product_name, p.category_id, p.product_description, p.product_price, p.store, c.category_name, pi.image_name_1
         FROM products p
         JOIN product_categories c ON p.category_id = c.category_id
         LEFT JOIN product_images pi ON p.product_id = pi.product_id";
+
 $result = $conn->query($sql);
 
 ?>
@@ -98,21 +100,30 @@ $result = $conn->query($sql);
             // Loop through each product and display it
             while($row = $result->fetch_assoc()) {
               $images = []; 
-              $image_sql = "SELECT image_name FROM product_images WHERE product_id = " . $row['product_id'];
+              // Updated SQL query to fetch all image names
+              $image_sql = "SELECT image_name_1, image_name_2, image_name_3 FROM product_images WHERE product_id = " . $row['product_id'];
               $image_result = $conn->query($image_sql);
-              while($img = $image_result->fetch_assoc()) {
-                  $images[] = $img['image_name'];
+              if($img = $image_result->fetch_assoc()) {
+                  if (!empty($img['image_name_1'])) {
+                      $images[] = $img['image_name_1']; // Main Image
+                  }
+                  if (!empty($img['image_name_2'])) {
+                      $images[] = $img['image_name_2'];
+                  }
+                  if (!empty($img['image_name_3'])) {
+                      $images[] = $img['image_name_3'];
+                  }
               }
-                ?>
+              ?>
                 
                 <div class="product">
                     <!-- Product Info -->
                     <div class="info-large">
-                        <h4><?php echo htmlspecialchars($row['product_name']); ?></h4>
+                    <h4><?php echo htmlspecialchars($row['product_name']); ?></h4>
+                    <span><?php echo htmlspecialchars($row['category_name']); ?></span>
+
+                        <?php if (!empty($row['category_name'])): ?>
                         <span><?php echo htmlspecialchars($row['category_name']); ?></span>
-                
-                        <?php if (!empty($row['product_label'])): ?>
-                            <span><?php echo htmlspecialchars($row['product_label']); ?></span>
                         <?php endif; ?>
                 
                         <br /><br />
@@ -144,8 +155,10 @@ $result = $conn->query($sql);
                         </div>
                 
                         <form action="../cart/cart2.php" method="post">
+                            <input type="hidden" name="product_image" value="<?php echo htmlspecialchars($images[0]); ?>">
                             <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
                             <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>">
+                            <input type="hidden" name="category_name" value="<?php echo htmlspecialchars($row['category_name']); ?>">
                             <input type="hidden" name="product_description" value="<?php echo htmlspecialchars($row['product_description']); ?>">
                             <input type="hidden" name="product_price" value="<?php echo htmlspecialchars($row['product_price']); ?>">
                             <input type="hidden" name="product_quantity" value="1"> <!-- Default quantity -->
@@ -161,7 +174,7 @@ $result = $conn->query($sql);
                             <div class="shadow"></div>
                             <?php
                             if (!empty($images)) {
-                                echo '<img src="path/to/images/' . htmlspecialchars($images[0]) . '" alt="Product Front Image" />';
+                                echo '<img src="' . htmlspecialchars($images[0]) . '" alt="Product Front Image" />';
                             } else {
                                 echo '<img src="https://placehold.co/600x600" alt="Default Front Image" />';
                             }
@@ -174,9 +187,9 @@ $result = $conn->query($sql);
                                     <span class="product_price">₱<?php echo number_format($row['product_price'], 2); ?></span>
                                     <span class="product_name"><?php echo htmlspecialchars($row['product_name']); ?></span>
                                     <br>
-                                    <span class="product_label"><?php echo htmlspecialchars($row['product_label']); ?></span>
+                                    <span class="category_name"><?php echo htmlspecialchars($row['category_name']); ?></span>
                                     <div class="product-options">
-                                        <br /><strong>DESCRIPTION</strong>
+                                    <br /><strong>DESCRIPTION</strong>
                                         <span><?php echo htmlspecialchars($row['product_description']); ?></span>
                                         <strong>STORE</strong>
                                         <div class="colors">
