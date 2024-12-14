@@ -1,23 +1,5 @@
-// registered_users
+TABLES NEEDED
 
-CREATE TABLE registered_users (
-    id INT AUTO_INCREMENT PRIMARY KEY,          -- Unique identifier for each user
-    first_name VARCHAR(100) NOT NULL,           -- User's first name
-    last_name VARCHAR(100) NOT NULL,            -- User's last name
-    birthday DATE NOT NULL,                     -- User's date of birth
-    age INT NOT NULL,                           -- User's age
-    contact_number VARCHAR(11) NOT NULL,        -- User's contact number (11 digits)
-    email VARCHAR(255) NOT NULL UNIQUE,         -- User's email, must be unique
-    address TEXT NOT NULL,                      -- User's address
-    username VARCHAR(50) NOT NULL UNIQUE,       -- User's username, must be unique
-    password VARCHAR(255) NOT NULL,             -- Hashed password
-    is_verified TINYINT(1) DEFAULT 0,           -- Verification status: 0 = not verified, 1 = verified
-    code_verification INT(6) DEFAULT NULL,      -- 6-digit verification code
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Record creation time
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Record update time
-);
-
-// 
 products -> linked to product_categories and product_images
     - product_id
     - product_name
@@ -51,3 +33,126 @@ orders -> linked to registered_users and products
     - order_status
     - order_date
     - delivery_date
+
+-----------------------------------------------------------------------------------
+
+TABLES
+
+CREATE TABLE registered_users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,          
+    first_name VARCHAR(100) NOT NULL,           
+    last_name VARCHAR(100) NOT NULL,            
+    birthday DATE NOT NULL,                     
+    contact_number VARCHAR(11) NOT NULL,        
+    email VARCHAR(255) NOT NULL UNIQUE,         
+    address TEXT NOT NULL,                       
+    username VARCHAR(50) NOT NULL UNIQUE,       
+    password VARCHAR(255) NOT NULL,             
+    is_verified TINYINT(1) DEFAULT 0,           
+    code_verification VARCHAR(6) DEFAULT NULL,      
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE product_categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,      
+    category_name VARCHAR(255) NOT NULL              
+);
+
+CREATE TABLE products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,        
+    product_name VARCHAR(255) NOT NULL, 
+    product_label VARCHAR(255) NOT NULL,            
+    product_description TEXT NOT NULL,               
+    product_price DECIMAL(10, 2) NOT NULL,           
+    category_id INT NOT NULL,                           
+    FOREIGN KEY (category_id) REFERENCES product_categories(category_id) ON DELETE CASCADE
+);
+
+CREATE TABLE product_images (
+    image_id INT AUTO_INCREMENT PRIMARY KEY,         
+    product_id INT NOT NULL,                         
+    image_name VARCHAR(255) NOT NULL,               
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+);
+
+CREATE TABLE cart_items (
+    cart_item_id INT AUTO_INCREMENT PRIMARY KEY,     
+    user_id INT NOT NULL,                            
+    product_id INT NOT NULL,                         
+    quantity INT NOT NULL,                           
+    subtotal_price DECIMAL(10, 2) NOT NULL,          
+    total_price DECIMAL(10, 2) NOT NULL,             
+    FOREIGN KEY (user_id) REFERENCES registered_users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+);
+
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,         
+    user_id INT NOT NULL,                            
+    order_status VARCHAR(50) NOT NULL,              
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    delivery_date DATETIME DEFAULT NULL,  
+    FOREIGN KEY (user_id) REFERENCES registered_users(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE order_items (
+    order_item_id INT AUTO_INCREMENT PRIMARY KEY,   
+    order_id INT NOT NULL,                         
+    product_id INT NOT NULL,                         
+    quantity INT NOT NULL,                           
+    subtotal_price DECIMAL(10, 2) NOT NULL,          
+    total_price DECIMAL(10, 2) NOT NULL,             
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
+);
+
+-----------------------------------------------------------------------------------
+
+VALUES
+
+-- Sample data for `registered_users`
+INSERT INTO registered_users (first_name, last_name, birthday, contact_number, email, address, username, password, is_verified, code_verification) VALUES
+('John', 'Doe', '1990-05-15', '09171234567', 'john.doe@example.com', '123 Main St, City A', 'johndoe', 'password123', 1, NULL);
+
+-- Sample data for `product_categories`
+INSERT INTO product_categories (category_name) VALUES
+('Prescription Medicines'),
+('Over the Counter'),
+('Vitamins and Supplements'),
+('Personal Care'),
+('Medicinal Supplies'),
+('Baby Care'),
+('Sexual Wellness');
+
+-- Sample data for `products`
+INSERT INTO products (product_name, product_label, product_description, product_price, category_id) VALUES
+('RiteMed Cetirizine 10 mg Tablet', 'Allergy & Histamine', 
+'Antihistamine. Allergic rhinitis such as sneezing; runny, itchy nose; and itchy, watery eyes. Skin symptoms of allergy such as itch and rash',
+16.00, 1
+);
+
+-----------------------------------------------------------------------------------
+
+DRAFTS
+
+-- Sample data for `product_images`
+INSERT INTO product_images (product_id, image_name) VALUES
+(1, '/PharmaEase/assets/ProductPics/'),
+
+-- Sample data for `cart_items`
+INSERT INTO cart_items (user_id, product_id, quantity, subtotal_price, total_price) VALUES
+(1, 1, 1, 699.99, 699.99),
+
+-- Sample data for `orders`
+INSERT INTO orders (user_id, product_id, quantity, subtotal_price, total_price, order_status, order_date, delivery_date) VALUES
+(1, 1, 1, 699.99, 699.99, 'Delivered', '2024-12-01 10:00:00', '2024-12-05 10:00:00'),
+(2, 2, 1, 999.99, 999.99, 'Pending', '2024-12-02 11:00:00', NULL),
+(3, 3, 1, 499.99, 499.99, 'Shipped', '2024-12-03 12:00:00', '2024-12-07 12:00:00'),
+(4, 4, 2, 199.98, 199.98, 'Processing', '2024-12-04 13:00:00', NULL),
+(5, 5, 3, 59.97, 59.97, 'Delivered', '2024-12-05 14:00:00', '2024-12-10 14:00:00'),
+(6, 6, 1, 14.99, 14.99, 'Pending', '2024-12-06 15:00:00', NULL),
+(7, 7, 2, 25.98, 25.98, 'Delivered', '2024-12-07 16:00:00', '2024-12-12 16:00:00'),
+(8, 8, 1, 29.99, 29.99, 'Cancelled', '2024-12-08 17:00:00', NULL),
+(9, 9, 1, 24.99, 24.99, 'Shipped', '2024-12-09 18:00:00', '2024-12-13 18:00:00'),
+(10, 10, 1, 149.99, 149.99, 'Processing', '2024-12-10 19:00:00', NULL);
