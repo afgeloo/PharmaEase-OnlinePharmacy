@@ -1,16 +1,7 @@
 <?php
 session_start(); // Start the session
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pharmaease_db";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection Error: " . $conn->connect_error);
-}
+require 'includes/db_connect.php';
 
 // Initialize variables
 $loginUsername = $loginPassword = "";
