@@ -1,20 +1,13 @@
 <?php
 session_start();
 
-require 'includes/db_connect.php';
+require 'includes/dbconnect.php';
 
-
-// SQL query to fetch products
-$sql = "SELECT * FROM `sexual wellness`
-        UNION ALL
-        SELECT * FROM `prescription medicines`
-        UNION ALL
-        SELECT * FROM `over the counter`
-        UNION ALL
-        SELECT * FROM `vitamins & suppliments`
-        UNION ALL
-        SELECT * FROM `baby care`
-        ORDER BY RAND()";
+// Updated SQL query with joins
+$sql = "SELECT p.product_id, p.product_name, p.product_description, p.product_price, c.category_name, pi.image_name
+        FROM products p
+        JOIN product_categories c ON p.category_id = c.category_id
+        LEFT JOIN product_images pi ON p.product_id = pi.product_id";
 $result = $conn->query($sql);
 
 ?>
@@ -23,51 +16,19 @@ $result = $conn->query($sql);
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="homepage.css?v=<?php echo time(); ?>">
-  <link rel="shortcut icon" type="image/png" href="/PharmaEase/PharmaEase-Final/assets/PharmaEaseLogo.png">
+  <link rel="stylesheet" href="css/home.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
   <title>Welcome to PharmaEase</title>
-  <script src="/PharmaEase/PharmaEase-Final/components/homepage/products.js"></script>
+  <script src="js/products.js"></script>
 </head>
 <body>
 <div class="container">
-    <!-- Main Navbar -->
-    <header>
-      <img src="/PharmaEase/PharmaEase-Final/assets/PharmaEaseFullLight.png" alt="PharmaEase Logo" class="logo-img">
-      <nav>
-      <a href="homepage.php">Home</a>
-        <a href="../cart/cart.php">Cart</a>
-        <a href="../checkout/checkout.php">Checkout</a>
-        <a href="../orderstatus/orders.php">Track Order</a>
-        <a href="../myaccount/account.php">My Account</a>
-        <a href="../main/main.php"><ion-icon name="log-out-outline"></ion-icon> Sign Out</a>
-      </nav>
-    </header>
-    <div class="navlist">
-      <div>
-      <a href="allproducts.php">All Products</a>
-        <a href="medicines.php">Prescription Medicines</a>
-        <a href="overthecounter.php">Over-the-Counter</a>
-        <a href="vitsandsupps.php">Vitamins and Supplements</a>
-        <a href="personalcare.php">Personal Care</a>
-        <a href="medsupps.php">Medicinal Supplies</a>
-        <a href="babycare.php">Baby Care</a>
-        <a href="sexualwellness.php">Sexual Wellness</a>
-      </div>
-      <div class="row">
-  <div class="col-xl-8">
-    <form action="#" class="search-box spaced-elements">
-      <div class="select-form">
-        <div class="select-itms">
-          <input list="select1" name="select" placeholder="Search PharmaEase">
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-    </div>
-    <!-- mask layout -->
+<?php include 'includes/header.php'; ?>
+
+<!-- mask layout -->
     <section class="section-grid grid-six-col gallery" id="gallery">
         <div class="card">
         </div>
@@ -101,13 +62,13 @@ $result = $conn->query($sql);
       </div>
     </div>
     <div class="card">
-      <button class="slider__btn--grid gallery-next"><img src="/PharmaEase/PharmaEase-Final/assets/slider/rightArrow.png" alt="right arrow"></button>
-      <button class="slider__btn--grid gallery-prev"><img src="/PharmaEase/PharmaEase-Final/assets/slider/leftArrow.png" alt="left arrow"></button>
+      <button class="slider__btn--grid gallery-next"><img src="assets/slider/rightArrow.png" alt="right arrow"></button>
+      <button class="slider__btn--grid gallery-prev"><img src="assets/slider/leftArrow.png" alt="left arrow"></button>
     </div>
       </section>
     <div class="details">
       <img
-        src="/PharmaEase/PharmaEase-Final/assets/PharmaEaseLogoHD.png"
+        src="assets/PharmaEaseLogoHD.png"
         ;
         alt="mask"
       />
@@ -137,13 +98,19 @@ $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             // Loop through each product and display it
             while($row = $result->fetch_assoc()) {
-                $images = json_decode($row['images'], true); // Decode the images from JSON format
+              $images = []; 
+              $image_sql = "SELECT image_name FROM product_images WHERE product_id = " . $row['product_id'];
+              $image_result = $conn->query($image_sql);
+              while($img = $image_result->fetch_assoc()) {
+                  $images[] = $img['image_name'];
+              }
                 ?>
                 
                 <div class="product">
                     <!-- Product Info -->
                     <div class="info-large">
-                        <h4><?php echo htmlspecialchars($row['name']); ?></h4>
+                    <h4><?php echo htmlspecialchars($row['product_name']); ?></h4>
+                    <span><?php echo htmlspecialchars($row['category_name']); ?></span>
 
                         <?php if (!empty($row['label'])): ?>
                         <span><?php echo htmlspecialchars($row['label']); ?></span>
@@ -283,7 +250,7 @@ $result = $conn->query($sql);
     </div>
     <!-- Footer  -->
   </div>
-  <?php include "footer.php"; ?>
+  <?php include "includes/footer.php"; ?>
 
   <script>
 const _ = className => document.querySelector(className);

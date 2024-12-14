@@ -1,7 +1,7 @@
 <?php
 session_start(); // Start the session
 
-require 'includes/db_connect.php';
+require 'includes/dbconnect.php';
 
 // Initialize variables
 $loginUsername = $loginPassword = "";
@@ -32,20 +32,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Check the database for regular users
-    $stmt = $conn->prepare("SELECT password FROM registered_users WHERE username = ? OR contact_number = ? OR email = ?");
-    $stmt->bind_param("sss", $loginUsername, $loginUsername, $loginUsername);
-    $stmt->execute();
-    $stmt->store_result();
+    $stmt = $pdo->prepare("SELECT password FROM registered_users WHERE username = ? OR contact_number = ? OR email = ?");
+    $stmt->execute([$loginUsername, $loginUsername, $loginUsername]);
 
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($storedPassword);
-        $stmt->fetch();
+    if ($stmt->rowCount() > 0) {
+        $storedPassword = $stmt->fetchColumn();
 
         // Verify the password
         if (password_verify($loginPassword, $storedPassword)) {
             $_SESSION['user'] = $loginUsername;
             $_SESSION['role'] = 'user';
-            header("Location: /PharmaEase/PharmaEase-Final/components/homepage/homepage.php");
+            header("Location: home.php");
             exit();
         } else {
             $loginError = "Invalid password.";
@@ -53,11 +50,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $loginError = "No account found with the provided username, contact number, or email.";
     }
-
-    $stmt->close();
 }
 $hasLoginError = !empty($loginError) ? 'true' : 'false';
-$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
