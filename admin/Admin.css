@@ -1,0 +1,220 @@
+/* admin.css */
+
+/* Container for Admin Content */
+.admin-container {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Header Styling */
+.admin-header {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #5d257c;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 10px;
+}
+
+/* Admin Navigation Bar */
+.admin-nav {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.admin-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.admin-nav a:hover {
+    background-color: #e0d4f5;
+}
+
+.admin-nav a.active {
+    background-color: #5d257c;
+    color: #ffffff;
+}
+
+/* Add Product Form Styling */
+.add-product-form {
+    margin-bottom: 40px;
+}
+
+.add-product-form h3 {
+    margin-bottom: 15px;
+    color: #333333;
+}
+
+.add-product-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555555;
+}
+
+.add-product-form input[type="text"],
+.add-product-form input[type="number"],
+.add-product-form textarea,
+.add-product-form select,
+.add-product-form input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.add-product-form button {
+    width: auto;
+}
+
+/* Remove Product List Styling */
+.remove-product-list h3 {
+    margin-bottom: 15px;
+    color: #333333;
+}
+
+/* Table Styling (Reinforced) */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+th {
+    background-color: #5d257c;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button Styles */
+.btn {
+    padding: 6px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+}
+
+.confirm-btn {
+    background-color: #28a745;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+}
+
+.edit-btn {
+    background-color: #007bff;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* Table Styles */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+}
+
+.admin-table th, .admin-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dddddd;
+}
+
+.admin-table th {
+    background-color: #5d257c;
+    color: white;
+}
+
+.admin-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    th, td {
+        padding: 8px;
+    }
+    .btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    .admin-header {
+        font-size: 20px;
+    }
+    .add-product-form input[type="text"],
+    .add-product-form input[type="number"],
+    .add-product-form textarea,
+    .add-product-form select,
+    .add-product-form input[type="file"] {
+        padding: 6px;
+    }
+    .admin-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
