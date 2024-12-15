@@ -143,7 +143,7 @@ if (!$user) {
                         readonly 
                         required 
                         maxlength="11" 
-                        pattern="[0-9]{11}" 
+                        pattern="09\d{9}" 
                         inputmode="numeric"
                     >
                 </div>
@@ -180,6 +180,7 @@ if (!$user) {
     const accountForm = document.getElementById('account-form');
     const saveChangesDiv = document.getElementById('saveChangesDiv');
 
+    // Enable editing when "Edit" button is clicked
     editButton.addEventListener('click', function () {
         const inputs = accountForm.querySelectorAll('input, textarea');
         inputs.forEach((input) => {
@@ -190,6 +191,30 @@ if (!$user) {
 
         saveChangesDiv.classList.remove('d-none');
         editButton.disabled = true;
+    });
+
+    // Prevent typing in birthday (force user to select from date picker)
+    const birthdayField = document.getElementById('birthday');
+    birthdayField.addEventListener('click', function () {
+        if (birthdayField.readOnly) {
+            birthdayField.removeAttribute('readonly');
+        }
+    });
+
+    // Validate contact number input (must start with 09 and be numeric)
+    const contactNumberField = document.getElementById('contact_number');
+    contactNumberField.addEventListener('input', function () {
+        let value = contactNumberField.value;
+
+        // Allow only numbers and prevent symbols and letters
+        value = value.replace(/[^0-9]/g, '');
+        if (!/^09\d{0,9}$/.test(value)) {
+            contactNumberField.setCustomValidity("Contact number must start with 09 and be 11 digits long");
+        } else {
+            contactNumberField.setCustomValidity('');
+        }
+
+        contactNumberField.value = value;
     });
 </script>
 </body>
