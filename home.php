@@ -28,6 +28,7 @@ $result = $conn->query($sql);
   <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
   <title>Welcome to PharmaEase</title>
   <script src="js/products.js"></script>
+  <script src="js/chatbot.js"></script>
 </head>
 <body>
 <div class="container">
@@ -242,7 +243,37 @@ $result = $conn->query($sql);
 
         <?php include 'includes/footer.php'; ?>
     </div>
-
+<!-- for the chatbot, it shouldn't affect the existing design -->
+<div class="floating-chat">
+    <i class="fa fa-comments" aria-hidden="true"><ion-icon name="chatbubbles-outline"></ion-icon></i>
+    <div class="chat">
+        <div class="header">
+            <span class="title">
+                Ask PharmaSense Bot
+            </span>
+            <button>
+                <i class="fa fa-times" aria-hidden="true">x</i> <!-- Add 'x' symbol here -->
+            </button>
+        </div>
+        <ul class="messages">
+            <li class="other">Hi! I'm PharmaSense, a chatbot designed to help you know more! Ask away and navigate with ease. 😉🩹💊</li>
+        </ul>
+        <div class="footerchat">
+            <div class="text-box" contenteditable="true" disabled="true"></div>
+            <button id="sendMessage">send</button>
+        </div>
+        <div class="predefined-messages">
+            <button class="predefined-message">What is PharmaEase?</button>
+            <button class="predefined-message">How to order?</button>
+            <button class="predefined-message">What products do you offer?</button>
+            <!-- Add more predefined message buttons here -->
+        </div>
+        <div class="search-mode-container">
+            <button id="toggleSearchMode">Switch Mode</button>
+            <span class="search-mode">General Chat Mode</span>
+        </div>
+    </div>
+</div>
     <script>
 $(document).ready(function() {
     $('[quantity]').each(function() {
