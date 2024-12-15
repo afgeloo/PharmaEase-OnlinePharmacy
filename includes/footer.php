@@ -27,7 +27,7 @@
         <li><a href="#">License</a></li>
     </ul>
     <ul>
-        <li><a class="head" href="#">CONTACT US</a></li>
+        <li><a class="head" href="contactus.php">CONTACT US</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Customer Support</a></li>
         <li><a href="#">Help Center</a></li>

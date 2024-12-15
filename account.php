@@ -120,6 +120,7 @@ if (!$user) {
                 <div class="col-md-6">
                     <label for="first_name" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="first_name" name="first_name" value="<?php echo htmlspecialchars($user['first_name']); ?>" readonly required>
+                    
                 </div>
                 <div class="col-md-6">
                     <label for="last_name" class="form-label">Last Name</label>

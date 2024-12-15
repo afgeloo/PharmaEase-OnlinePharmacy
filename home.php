@@ -7,7 +7,11 @@ require 'includes/dbconnect.php';
 $sql = "SELECT p.product_id, p.product_name, p.category_id, p.product_description, p.product_price, p.store, c.category_name, pi.image_name_1
         FROM products p
         JOIN product_categories c ON p.category_id = c.category_id
-        LEFT JOIN product_images pi ON p.product_id = pi.product_id";
+        LEFT JOIN product_images pi ON p.product_id = pi.product_id
+        WHERE p.category_id IN (3, 4, 5)
+        ORDER BY RAND()";
+
+
 
 $result = $conn->query($sql);
 

@@ -16,6 +16,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             p.product_description, 
             p.store, 
             c.category_name, 
+            p.product_label,
             pi.image_name_1, 
             pi.image_name_2, 
             pi.image_name_3 
@@ -134,7 +135,9 @@ $conn->close();
                 <div class="mb-3">
                     <h1 class="product-title"><?php echo htmlspecialchars($product['product_name']); ?></h1>
                     <div class="text-muted">Category: <?php echo htmlspecialchars($product['category_name']); ?></div>
-                    <div class="text-muted">Product No.: <strong><?php echo htmlspecialchars($product['product_id']); ?></strong></div>
+                    <div class="text-muted">Label: <?php echo htmlspecialchars($product['product_label']); ?></div>
+                    <!-- Hide the Product ID by removing this line -->
+                    <!-- <div class="text-muted">Product No.: <strong><?php echo htmlspecialchars($product['product_id']); ?></strong></div> -->
                 </div>
                 <h3 class="text-primary mb-4">₱<?php echo number_format($product['product_price'], 2); ?></h3>
                 <div class="mb-3">
@@ -155,9 +158,7 @@ $conn->close();
                 </form>
 
                 </div>
-
-               
-
+                
                 <div class="text-secondary">
                     PharmaEase ensures that individuals can access essential medications conveniently, especially during emergencies.
                 </div>

@@ -136,7 +136,7 @@ $total = $total_cart + $tax;
             </div>
         <?php else: ?>
             <div class="alert alert-info" role="alert">
-                Your cart is empty. <a href="products.php" class="alert-link">Browse products</a> to add items to your cart.
+                Your cart is empty. <a href="productlist.php" class="alert-link">Browse products</a> to add items to your cart.
             </div>
         <?php endif; ?>
     </div>
