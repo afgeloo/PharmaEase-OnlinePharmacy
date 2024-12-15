@@ -143,34 +143,7 @@ INSERT INTO products (product_name, product_label, product_description, product_
 'This lotion is formulated with natural colloidal oatmeal and rich emollients to soothe and moisturize baby''s delicate skin.',
 814.00, 6, 'Watsons');
 
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
-('Tommee Tippee', 'Baby Bottles and Nipples', 
-'Features an air-vent system to reduce colic and discomfort',
-560.00, 6, 'Mercury Drug');
 
-INSERT INTO products (product_name, product_label, product_description, product_price, category_id, store) VALUES
-('Philips Avent', 'Baby Bottles and Nipples', 
-'Designed to support natural feeding rhythms with a wide neck and air vent to reduce colic.',
-2349.00, 6, 'Watsons');
-
--- Sample data for `product_images`
-INSERT INTO product_images (product_id, image_name_1, image_name_2, image_name_3) VALUES
-(1, 
-'/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion.png',
-'/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion(2).png',
-'/PharmaEase/assets/ProductPics/BABY CARES/aveeno lotion(3).png');
-
-INSERT INTO product_images (product_id, image_name_1, image_name_2, image_name_3) VALUES
-(2, 
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles.png',
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles(2).png',
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles(3).png');
-
-INSERT INTO product_images (product_id, image_name_1, image_name_2, image_name_3) VALUES
-(3, 
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles(6).png',
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles(4).png',
-'/PharmaEase/assets/ProductPics/BABY CARES/baby bottles(5).png');
 
 -----------------------------------------------------------------------------------
 
