@@ -130,3 +130,21 @@ function removeItem(removeButton) {
     recalculateCart();
   });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.quantity-decrement').forEach(button => {
+      button.addEventListener('click', function() {
+          const input = this.nextElementSibling;
+          if (input.value > 1) {
+              input.value = parseInt(input.value) - 1;
+          }
+      });
+  });
+
+  document.querySelectorAll('.quantity-increment').forEach(button => {
+      button.addEventListener('click', function() {
+          const input = this.previousElementSibling;
+          input.value = parseInt(input.value) + 1;
+      });
+  });
+});

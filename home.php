@@ -140,13 +140,21 @@ $result = $conn->query($sql);
                         </div>
                 
                         <h3>QUANTITY</h3> <!-- Added quantity heading -->
-                        <div class="quantity-control" data-quantity="">
-                            <button class="quantity-btn" data-quantity-minus="">
-                                <!-- SVG Icon -->
+                        <div class="quantity-control" quantity="">
+                            <button class="quantity-btn" quantity-minus="">
+                                <svg viewBox="0 0 409.6 409.6">
+                                    <g>
+                                        <g>
+                                            <path d="M392.533,187.733H17.067C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h375.467 c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z" />
+                                        </g>
+                                    </g>
+                                </svg>
                             </button>
-                            <input type="number" class="quantity-input" data-quantity-target="" value="1" step="1" min="1" name="quantity">
-                            <button class="quantity-btn" data-quantity-plus="">
-                                <!-- SVG Icon -->
+                            <input type="number" class="quantity-input" quantity-target="" value="1" step="1" min="1" max="" name="quantity">
+                            <button class="quantity-btn" quantity-plus="">
+                                <svg viewBox="0 0 426.66667 426.66667">
+                                    <path d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0" />
+                                </svg>
                             </button>
                         </div>
                 
@@ -238,11 +246,51 @@ $result = $conn->query($sql);
         ?>
         
     </div>
-    <!-- Footer  -->
-  </div>
-  <?php include "includes/footer.php"; ?>
 
-  <script>
+        <?php include 'includes/footer.php'; ?>
+    </div>
+
+    <script>
+$(document).ready(function() {
+    $('[quantity]').each(function() {
+        var $this = $(this);
+        var $quantityTarget = $this.find('[quantity-target]');
+        var $quantityMinus = $this.find('[quantity-minus]');
+        var $quantityPlus = $this.find('[quantity-plus]');
+        var quantity = parseInt($quantityTarget.val(), 10);
+
+        $quantityMinus.on('click', function() {
+            if (quantity > 1) {
+                quantity--;
+                $quantityTarget.val(quantity);
+                $this.closest('.info-large').find('.quantity').val(quantity); // Update hidden input
+            }
+        });
+
+        $quantityPlus.on('click', function() {
+            quantity++;
+            $quantityTarget.val(quantity);
+            $this.closest('.info-large').find('.quantity').val(quantity); // Update hidden input
+        });
+
+        $quantityTarget.on('input', function() {
+            var value = parseInt($quantityTarget.val(), 10);
+            if (!isNaN(value) && value > 0) {
+                quantity = value;
+                $this.closest('.info-large').find('.quantity').val(quantity); // Update hidden input
+            }
+        });
+
+        $quantityTarget.on('blur', function() {
+            if ($quantityTarget.val() === '' || parseInt($quantityTarget.val(), 10) <= 0) {
+                quantity = 1;
+                $quantityTarget.val(quantity);
+                $this.closest('.info-large').find('.quantity').val(quantity); // Update hidden input
+            }
+        });
+    });
+});
+
 const _ = className => document.querySelector(className);
 const __ = className => document.querySelectorAll(className);
 // slide width in %

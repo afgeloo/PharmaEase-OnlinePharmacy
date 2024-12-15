@@ -2,6 +2,17 @@
 session_start();
 require 'includes/dbconnect.php';
 
+$cart = $_SESSION['cart'] ?? [];
+
+// Sample display of cart items
+// if (!empty($cart)) {
+//     foreach ($cart as $productId => $quantity) {
+//         echo "Product ID: $productId, Quantity: $quantity<br>";
+//     }
+// } else {
+//     echo "Your cart is empty.";
+// }
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -28,6 +39,9 @@ $sql = "
 ";
 
 $stmt = $conn->prepare($sql);
+if (!$stmt) {
+    die("Error preparing statement: " . $conn->error);
+}
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -35,11 +49,16 @@ $result = $stmt->get_result();
 // Calculate total cart value
 $total_cart = 0;
 $cart_items = [];
-while($row = $result->fetch_assoc()) {
+while ($row = $result->fetch_assoc()) {
     $total_cart += $row['subtotal_price'];
     $cart_items[] = $row;
 }
 $stmt->close();
+
+// Define tax rate
+$tax_rate = 0.05;
+$tax = $total_cart * $tax_rate;
+$total = $total_cart + $tax;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +71,6 @@ $stmt->close();
 </head>
 <body>
     <?php include 'includes/header.php'; ?>
-
     <div class="container my-5">
         <h2 class="mb-4">Your Shopping Cart</h2>
         <?php if (count($cart_items) > 0): ?>
@@ -70,28 +88,29 @@ $stmt->close();
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($cart_items as $item): ?>
+                        <?php foreach ($cart_items as $item): ?>
                             <tr>
                                 <td>
-                                    <img src="<?php echo htmlspecialchars($item['image_name_1']); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="img-thumbnail" width="100">
+                                    <img src="<?php echo htmlspecialchars($item['image_name_1'] ?? 'path/to/default-image.jpg'); ?>" 
+                                         alt="<?php echo htmlspecialchars($item['product_name']); ?>" 
+                                         class="img-thumbnail" 
+                                         width="100">
                                 </td>
                                 <td><?php echo htmlspecialchars($item['product_name']); ?></td>
                                 <td><?php echo htmlspecialchars($item['product_description']); ?></td>
                                 <td>
-                                    <form method="POST" action="cart_functionality/update_cart.php" class="d-flex align-items-center">
-                                        <input type="hidden" name="cart_item_id" value="<?php echo $item['cart_item_id']; ?>">
-                                        <button type="button" class="btn btn-secondary btn-sm quantity-decrement">-</button>
-                                        <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" min="1" class="form-control text-center mx-2" style="width: 50px;">
-                                        <button type="button" class="btn btn-secondary btn-sm quantity-increment">+</button>
-                                        <button type="submit" class="btn btn-primary btn-sm ms-2">Update</button>
-                                    </form>
+                                    <input type="number" class="quantity-input" 
+                                           value="<?php echo $item['quantity']; ?>" 
+                                           step="1" 
+                                           min="1" 
+                                           data-quantity-target>
                                 </td>
                                 <td>₱<?php echo number_format($item['product_price'], 2); ?></td>
                                 <td>₱<?php echo number_format($item['subtotal_price'], 2); ?></td>
                                 <td>
                                     <form method="POST" action="cart_functionality/remove_from_cart.php">
-                                        <input type="hidden" name="cart_item_id" value="<?php echo $item['cart_item_id']; ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                        <input type="hidden" name="cart_item_id" value="<?php echo htmlspecialchars($item['cart_item_id']); ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Remove item from cart">Remove</button>
                                     </form>
                                 </td>
                             </tr>
@@ -105,9 +124,9 @@ $stmt->close();
                     <div class="card-body">
                         <h5 class="card-title">Cart Summary</h5>
                         <p class="card-text">
-                            <strong>Subtotal:</strong> ₱<?php echo number_format($total_cart, 2); ?><br>
-                            <strong>Tax (5%):</strong> ₱<?php echo number_format($total_cart * 0.05, 2); ?><br>
-                            <strong>Total:</strong> ₱<?php echo number_format($total_cart * 1.05, 2); ?>
+                            <strong>Grand Total:</strong> ₱<?php echo number_format($total_cart, 2); ?><br>
+                            <strong>Tax (<?php echo $tax_rate * 100; ?>%):</strong> ₱<?php echo number_format($tax, 2); ?><br>
+                            <strong>Final Total:</strong> ₱<?php echo number_format($total, 2); ?>
                         </p>
                         <a href="checkout.php" class="btn btn-success w-100">Proceed to Checkout</a>
                     </div>
