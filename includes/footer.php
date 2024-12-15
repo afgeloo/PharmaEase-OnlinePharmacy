@@ -10,9 +10,10 @@
         <li><ion-icon name="mail-outline"></ion-icon> pharmaease.info@gmail.com</li>
         </ul>
     <ul>
-        <li><a class="head" href="../account.php">MY ACCOUNT</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Track Order</a></li>
+        <li><a class="head" href="./account.php">MY ACCOUNT</a></li>
+        <li><a href="./cart.php">Cart</a></li>
+        <li><a href="./checkout.php">Checkout</a></li>
+        <li><a href="./orders.php">Track Order</a></li>
         <li><a href="#">Frequently Asked Questions</a></li>
     </ul>
     <ul>
