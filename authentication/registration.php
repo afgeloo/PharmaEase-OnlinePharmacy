@@ -71,10 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     if (empty($address)) $addressError = "Address is required";
     if (empty($username)) $usernameError = "Username is required";
 
-    // if (empty($password)) $passwordError = "Password is required";
-    // elseif (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/", $password)) {
-    //     $passwordError = "Password must contain letters, numbers, and symbols, with a minimum of 8 characters";
-    // }
+    if (empty($password)) $passwordError = "Password is required";
+    elseif (!preg_match("/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/", $password)) {
+        $passwordError = "Password must contain letters, numbers, and symbols, with a minimum of 8 characters";
+    }
 
     if ($password !== $confirmPassword) $confirmPasswordError = "Passwords do not match";
 
