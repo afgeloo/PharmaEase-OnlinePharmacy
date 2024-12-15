@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $formatted_delivery_date = $delivery_date->format('Y-m-d H:i:s');
             $stmt->bind_param("ssi", $new_status, $formatted_delivery_date, $order_id);
             if ($stmt->execute()) {
-                echo "Order #$order_id confirmed with delivery date $formatted_delivery_date.";
+                // echo "Order #$order_id confirmed with delivery date $formatted_delivery_date.";
             } else {
                 echo "Error executing statement: " . $stmt->error;
             }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt) {
             $stmt->bind_param("si", $new_status, $order_id);
             if ($stmt->execute()) {
-                echo "Order #$order_id rejected.";
+                // echo "Order #$order_id rejected.";
             } else {
                 echo "Error executing statement: " . $stmt->error;
             }
