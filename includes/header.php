@@ -25,6 +25,7 @@ $categoryResult = $conn->query($categorySql);
             <?php while($category = $categoryResult->fetch_assoc()): ?>
                 <a href="productlist.php?category=<?php echo $category['category_id']; ?>">
                     <?php echo htmlspecialchars($category['category_name']); ?>
+                    
                 </a>
             <?php endwhile; ?>
         <?php endif; ?>
@@ -67,32 +68,33 @@ $categoryResult = $conn->query($categorySql);
     }
     
     .navlist a:link, .navlist a:visited, .navlist a:active {
-        color: #333333;
-        font-size: 14px;
-        margin-right: 20px;
-    }
-    
-    .navlist a:first-child {
-        margin-left: 30px;
-    }
-    
-    .navlist {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        gap: 20px;
-        position: sticky;
-        top: 60px; /* Adjust based on header height */
-        background-color: #FFF9F0; /* Match body background color */
-        z-index: 1001; /* Ensure it stays above the header */
-        padding: 10px 20px; /* Add padding */
-    }
-    
-    nav a{
-        color: #FFF9F0 !important;
-    }
+    color: #333333;
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.navlist a:first-child {
+    margin-left: 30px;
+}
+
+.navlist {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the items horizontally */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 20px;
+    position: sticky;
+    top: 60px; /* Adjust based on header height */
+    background-color: #FFF9F0; /* Match body background color */
+    z-index: 1001; /* Ensure it stays above the header */
+    padding: 10px 20px; /* Add padding */
+}
+
+nav a {
+    color: #FFF9F0 !important;
+}
+
 
     input {
         font-size: 18px;
