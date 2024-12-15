@@ -6,7 +6,9 @@ $categorySql = "SELECT category_id, category_name FROM product_categories ORDER 
 $categoryResult = $conn->query($categorySql);
 ?>
 <header>
+<a href="home.php">
     <img src="assets/PharmaEaseFullLight.png" alt="PharmaEase Logo" class="logo-img">
+</a>
     <nav>
         <a href="home.php">Home</a>
         <a href="cart.php">Cart</a>
