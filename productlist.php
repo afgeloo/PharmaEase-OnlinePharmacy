@@ -76,7 +76,6 @@ $result = $stmt->get_result();
             }
         ?>
         </h2>
-
         <div class="product-container">
             <div id="grid-selector">
                 <div id="grid-menu">
@@ -86,7 +85,6 @@ $result = $stmt->get_result();
                         <li class="smallGrid"><a class="active" href=""></a></li>
                     </ul>
                 </div>
-                <ion-icon name="cart-outline"></ion-icon>
             </div>
             
             <div id="grid">

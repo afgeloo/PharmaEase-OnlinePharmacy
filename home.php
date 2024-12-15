@@ -93,8 +93,7 @@ $result = $conn->query($sql);
                        <li class="smallGrid"><a class="active" href=""></a></li>
                    </ul>
                </div>
-               
-               <ion-icon name="cart-outline"></ion-icon>
+               <a href="cart.php"><ion-icon name="cart-outline"></ion-icon></ion-icon></a>
         </div>
         
         <div id="grid">
@@ -162,17 +161,6 @@ $result = $conn->query($sql);
                                 </svg>
                             </button> -->
                         </div>
-                
-                        <form action="../cart/cart2.php" method="post">
-                            <input type="hidden" name="product_image" value="<?php echo htmlspecialchars($images[0]); ?>">
-                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($row['product_id']); ?>">
-                            <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>">
-                            <input type="hidden" name="category_name" value="<?php echo htmlspecialchars($row['category_name']); ?>">
-                            <input type="hidden" name="product_description" value="<?php echo htmlspecialchars($row['product_description']); ?>">
-                            <input type="hidden" name="product_price" value="<?php echo htmlspecialchars($row['product_price']); ?>">
-                            <input type="hidden" name="product_quantity" value="1"> <!-- Default quantity -->
-                            <!-- <button type="submit" name="add_to_cart" class="add-cart-large">Add To Cart</button> -->
-                        </form>
                 
                         <a href="productview.php?id=<?php echo $row['product_id']; ?>" class="view_product_link">View Product Details</a>
                     </div>
