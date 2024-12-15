@@ -79,7 +79,7 @@ $categoryResult = $conn->query($categorySql);
     <link rel="stylesheet" type="text/css" href="../css/home.css">
     <link rel="stylesheet" type="text/css" href="Admin.css?v=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/png" href="/PharmaEase/PharmaEase-Final/assets/PharmaEaseLogo.png">
+    <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
 </head>
 <body>
     <div class="container">
@@ -140,6 +140,7 @@ $categoryResult = $conn->query($categorySql);
             <?php endif; ?>
         </div>
     </div>
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>
 <?php
