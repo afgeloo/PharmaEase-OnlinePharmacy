@@ -87,6 +87,7 @@ function calculate_delivery_date(DateTime $start_date, $days) {
     <title>Manage Orders - PharmaEase Admin</title>
     <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="Admin.css">
     <style>

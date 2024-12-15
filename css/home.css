@@ -945,7 +945,7 @@
 	  overflow:hidden;	
   }
   .carousel img{
-	  margin-top: -22px;
+	  /* margin-top: -22px; */
 	  width: 110%;
   }
   .arrows-perspective{
@@ -1167,7 +1167,7 @@
   
   .product.large{
 	  width:45%;
-	  height: 55%;
+	  /* height: 55%; */
 	  margin-bottom:25px;
 	  overflow:hidden;
 	  background-color: white;

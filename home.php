@@ -139,9 +139,10 @@ $result = $conn->query($sql);
                             <span><?php echo htmlspecialchars($row['store']); ?></span>
                         </div>
                 
-                        <h3>QUANTITY</h3> <!-- Added quantity heading -->
-                        <div class="quantity-control" quantity="">
-                            <button class="quantity-btn" quantity-minus="">
+                        <!-- <h3>QUANTITY</h3> Added quantity heading -->
+                        <div> 
+                          <!-- class="quantity-control" quantity=""> -->
+                            <!-- <button class="quantity-btn" quantity-minus="">
                                 <svg viewBox="0 0 409.6 409.6">
                                     <g>
                                         <g>
@@ -149,13 +150,13 @@ $result = $conn->query($sql);
                                         </g>
                                     </g>
                                 </svg>
-                            </button>
-                            <input type="number" class="quantity-input" quantity-target="" value="1" step="1" min="1" max="" name="quantity">
+                            </button> -->
+                            <!-- <input type="number" class="quantity-input" quantity-target="" value="1" step="1" min="1" max="" name="quantity">
                             <button class="quantity-btn" quantity-plus="">
                                 <svg viewBox="0 0 426.66667 426.66667">
                                     <path d="m405.332031 192h-170.664062v-170.667969c0-11.773437-9.558594-21.332031-21.335938-21.332031-11.773437 0-21.332031 9.558594-21.332031 21.332031v170.667969h-170.667969c-11.773437 0-21.332031 9.558594-21.332031 21.332031 0 11.777344 9.558594 21.335938 21.332031 21.335938h170.667969v170.664062c0 11.777344 9.558594 21.335938 21.332031 21.335938 11.777344 0 21.335938-9.558594 21.335938-21.335938v-170.664062h170.664062c11.777344 0 21.335938-9.558594 21.335938-21.335938 0-11.773437-9.558594-21.332031-21.335938-21.332031zm0 0" />
                                 </svg>
-                            </button>
+                            </button> -->
                         </div>
                 
                         <form action="../cart/cart2.php" method="post">
@@ -166,7 +167,7 @@ $result = $conn->query($sql);
                             <input type="hidden" name="product_description" value="<?php echo htmlspecialchars($row['product_description']); ?>">
                             <input type="hidden" name="product_price" value="<?php echo htmlspecialchars($row['product_price']); ?>">
                             <input type="hidden" name="product_quantity" value="1"> <!-- Default quantity -->
-                            <button type="submit" name="add_to_cart" class="add-cart-large">Add To Cart</button>
+                            <!-- <button type="submit" name="add_to_cart" class="add-cart-large">Add To Cart</button> -->
                         </form>
                 
                         <a href="productview.php?id=<?php echo $row['product_id']; ?>" class="view_product_link">View Product Details</a>
