@@ -94,7 +94,7 @@ $conn->close();
         .addcart button {
             margin-left: 10px;
             height: 40px;
-        }
+        } 
     </style>
 </head>
 <body>
