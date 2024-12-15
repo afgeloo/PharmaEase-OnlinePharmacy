@@ -140,8 +140,8 @@ $expected_delivery = $delivery_date->format('F j, Y');
                     <select class="form-select" id="paymentMethod" name="payment_method" required>
                         <option value="">Select a payment method</option>
                         <option value="Cash on Delivery">Cash on Delivery</option>
-                        <option value="Credit Card">Credit Card</option>
-                        <option value="E-Wallet">E-Wallet</option>
+                        <!-- <option value="Credit Card">Credit Card</option>
+                        <option value="E-Wallet">E-Wallet</option> -->
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Proceed to Checkout</button>

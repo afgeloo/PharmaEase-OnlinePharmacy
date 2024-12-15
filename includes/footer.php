@@ -2,7 +2,7 @@
 <footer>
     <ul>
         <li>
-            <a href="homepage.php">
+            <a href="home.php">
                 <img src="assets/PharmaEaseFullLight.png" alt="PharmaEase Logo" class="footer-logo-img">
             </a>
         </li>
@@ -10,9 +10,8 @@
         <li><ion-icon name="mail-outline"></ion-icon> pharmaease.info@gmail.com</li>
         </ul>
     <ul>
-        <li><a class="head" href="#">MY ACCOUNT</a></li>
+        <li><a class="head" href="../account.php">MY ACCOUNT</a></li>
         <li><a href="#">Orders</a></li>
-        <li><a href="#">Returns/Refunds</a></li>
         <li><a href="#">Track Order</a></li>
         <li><a href="#">Frequently Asked Questions</a></li>
     </ul>
