@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch orders for the logged-in user
-$sql = "SELECT order_id, order_status, order_date, delivery_date FROM orders WHERE user_id = ? ORDER BY order_date DESC";
+$sql = "SELECT order_id, order_status, order_date FROM orders WHERE user_id = ? ORDER BY order_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -18,8 +18,13 @@ $ordersResult = $stmt->get_result();
 
 $orders = [];
 while ($row = $ordersResult->fetch_assoc()) {
+    // Calculate delivery date by adding 3 days to the order date
+    $order_date = new DateTime($row['order_date']);
+    $order_date->modify('+3 days');
+    $row['delivery_date'] = $order_date->format('F j, Y, g:i A');
     $orders[] = $row;
 }
+
 $stmt->close();
 $conn->close();
 ?>
@@ -34,8 +39,8 @@ $conn->close();
     <style>
         body {
             font-family: 'Varela Round', sans-serif;
-            background-color: #f8f9fa;
-        }
+            background-color: #FFF9F0;
+            }
         .order-card {
             margin-bottom: 15px;
         }
@@ -113,7 +118,7 @@ $conn->close();
 
             <div id="collapse<?php echo $index; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $index; ?>" data-bs-parent="#ordersAccordion">
                 <div class="card-body">
-                    <p><strong>Delivery Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($order['delivery_date'])); ?></p>
+                    <p><strong>Delivery Date:</strong> <?php echo $order['delivery_date']; ?></p>
                     <?php if (!empty($orderItems)): ?>
                     <div class="table-responsive">
                         <table class="table align-middle">
