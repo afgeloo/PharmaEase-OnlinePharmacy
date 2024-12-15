@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Order Confirmation - PharmaEase</title>
     <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Varela Round', sans-serif;
@@ -112,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="mb-4">Your order number is: <span class="order-number"><?php echo htmlspecialchars($order_number); ?></span></p>
         <p>Thank you for shopping with PharmaEase! We will deliver your order soon.</p>
         <div class="mt-4">
-            <a href="index.php" class="btn btn-primary w-100">Continue Shopping</a>
+            <a href="home.php" class="btn btn-primary w-100">Continue Shopping</a>
         </div>
     </div>
 </div>

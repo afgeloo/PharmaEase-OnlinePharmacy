@@ -83,6 +83,7 @@ $hasLoginError = !empty($loginError) ? 'true' : 'false';
     <link rel="stylesheet" href="css/mainstyles.css?v=<?php echo time(); ?>">
     <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <title>PharmaEase</title>
