@@ -86,7 +86,6 @@ CREATE TABLE cart_items (
     product_id INT NOT NULL,                         
     quantity INT NOT NULL,                           
     subtotal_price DECIMAL(10, 2) NOT NULL,          
-    total_price DECIMAL(10, 2) NOT NULL,             
     FOREIGN KEY (user_id) REFERENCES registered_users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
@@ -197,3 +196,5 @@ INSERT INTO orders (user_id, product_id, quantity, subtotal_price, total_price, 
 (8, 8, 1, 29.99, 29.99, 'Cancelled', '2024-12-08 17:00:00', NULL),
 (9, 9, 1, 24.99, 24.99, 'Shipped', '2024-12-09 18:00:00', '2024-12-13 18:00:00'),
 (10, 10, 1, 149.99, 149.99, 'Processing', '2024-12-10 19:00:00', NULL);
+
+ALTER TABLE orders ADD COLUMN order_number VARCHAR(50) UNIQUE;

@@ -1,0 +1,429 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Varela Round", sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FFF9F0;
+}
+
+.container {
+    width: 100%;
+}
+
+/* header */
+header {
+    background-color: #88C273;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px; /* Add padding */
+    gap: 80px;
+    padding-bottom: 20px; /* Add bottom padding */
+}
+
+header p {
+    color: #FFF9F0;
+    font-size: 48px;
+    margin-left: 54px;
+}
+
+header .logo-img {
+    height: 50px;
+    margin-left: 54px;
+}
+
+a {
+    margin-right: 39px;
+    font-size: 14px;
+    color: #FFF9F0;
+    text-decoration: none;
+}
+
+/* header flexbox */
+/* Navlist 2nd nav bar with search icon */
+.navlist a:link, .navlist a:visited, .navlist a:active {
+    color: #333333;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.navlist a:first-child {
+    margin-left: 30px;
+}
+
+.search {
+    margin-right: 62px;
+}
+
+.navlist {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    gap: 20px;
+    position: sticky;
+    top: 60px; /* Adjust based on header height */
+    background-color: #FFF9F0; /* Match body background color */
+    z-index: 1001; /* Ensure it stays above the header */
+    padding: 10px 20px; /* Add padding */
+}
+
+input {
+    font-size: 18px;
+}
+
+/* Cart Segment */
+.cart-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.shopping-cart {
+    margin-top: 20px;
+}
+
+.column-labels {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.column-labels label {
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center; /* Center align the labels */
+    flex: 1.05; /* Ensure all labels have the same width */
+}
+
+.column-labels .product-checkbox {
+    flex: 0.5;
+    text-align: center; /* Center align the checkbox label */
+}
+
+.column-labels .product-image {
+    flex: 1.9; /* Adjusted to align with product div */
+}
+
+.column-labels .product-details {
+    flex: 2.5; /* Adjusted to align with product div */
+}
+
+.column-labels .product-price,
+.column-labels .product-quantity,
+.column-labels .product-removal,
+.column-labels .product-line-price {
+    text-align: center;
+}
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; /* Reduce padding */
+    border-bottom: 1px solid #eee;
+}
+
+.product-checkbox {
+    margin-left: 10px; /* Add margin to center the checkbox */
+    text-align: center; /* Center align the checkbox */
+    width: 20px; /* Increase size */
+    height: 20px; /* Increase size */
+    margin-right: 10px; /* Add space beside checkbox */
+}
+
+.product-checkbox input[type="checkbox"] {
+    width: 20px; /* Increase size */
+    height: 20px; /* Increase size */
+    appearance: none; /* Remove default styling */
+    background-color: #fff; /* Background color */
+    border: 2px solid #88C273; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+    cursor: pointer; /* Pointer cursor */
+}
+
+.product-checkbox input[type="checkbox"]:checked {
+    background-color: #88C273; /* Green background when checked */
+    border-color: #88C273; /* Green border when checked */
+}
+
+.product-checkbox input[type="checkbox"]:checked::before {
+    content: '✔'; /* Check mark */
+    display: block;
+    text-align: center;
+    color: #fff; /* White check mark */
+    font-size: 14px; /* Adjust font size */
+    line-height: 18px; /* Center the check mark */
+}
+
+.product .product-image {
+    flex: 1.5; /* Adjusted to align with column labels */
+    text-align: center;
+}
+
+.product .product-image img {
+    width: 100px;
+}
+
+.product .product-details {
+    flex: 2.5; /* Adjusted to align with column labels */
+    margin-left: 10px; /* Add margin to reduce negative space */
+}
+
+.product .product-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.product .product-description {
+    font-size: 14px;
+    color: #777;
+}
+
+.product .product-price,
+.product .product-quantity,
+.product .product-removal,
+.product .product-line-price {
+    flex: 1;
+    text-align: center;
+}
+
+.product .product-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the content */
+    border-radius: 10px;
+    padding: 0.25rem; /* Reduce padding */
+    margin-top: 10px;
+    width: 90px; /* Set a fixed width */
+    height: 30px; /* Adjust height to fit buttons exactly */
+}
+
+.product .quantity-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0px 8px;
+    cursor: pointer;
+}
+
+.product .quantity-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.product .quantity-input {
+    outline: none;
+    text-align: center;
+    width: 30px; /* Reduce width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+}
+
+.product .quantity-input::-webkit-inner-spin-button,
+.product .quantity-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.product .remove-product {
+    background-color: #c66;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.product .remove-product:hover {
+    background-color: #a44;
+}
+
+.totals {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+}
+
+.totals .totals-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.totals .totals-item label {
+    font-weight: bold;
+    text-align: right; /* Align labels to the right */
+    width: 80%; /* Adjust width to align with values */
+}
+
+.totals .totals-item .totals-value {
+    font-weight: bold;
+    text-align: right; /* Align values to the right */
+    width: 20%; /* Adjust width to align with labels */
+}
+
+.totals .totals-item-total {
+    font-size: 20px; /* Increase font size */
+    font-weight: bold;
+    color: #88C273; /* Change color to green */
+}
+
+.checkout {
+    background-color: #fff;
+    color: #88C273;
+    border: 2px solid #88C273;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    transition: all 200ms ease-out;
+}
+
+.checkout:hover {
+    background-color: #88C273;
+    color: #fff;
+}
+
+@media screen and (max-width: 650px) {
+    .shopping-cart {
+        margin: 0;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .column-labels {
+        display: none;
+    }
+
+    .product {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .product .product-image,
+    .product .product-details,
+    .product .product-price,
+    .product .product-quantity,
+    .product .product-removal,
+    .product .product-line-price {
+        width: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .product .product-image img {
+        margin: 0 0 10px 0;
+    }
+
+    .product .product-quantity input {
+        margin-left: 0;
+    }
+
+    .totals {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .totals .totals-item {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .product .product-removal {
+        float: right;
+    }
+
+    .product .product-line-price {
+        float: right;
+        clear: left;
+        width: auto;
+        margin-top: 10px;
+    }
+
+    .product .product-line-price:before {
+        content: 'Item Total: $';
+    }
+
+    .totals .totals-item label {
+        width: 60%;
+    }
+
+    .totals .totals-item .totals-value {
+        width: 40%;
+    }
+}
+
+
+/* Quantity Control */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the content */
+    background: #eaeaea;
+    border-radius: 10px;
+    padding: 0.25rem; /* Reduce padding */
+    margin-top: 10px;
+    width: 90px; /* Set a fixed width */
+    height: 30px; /* Adjust height to fit buttons exactly */
+}
+
+.quantity-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin: 0;
+    padding: 0px 8px;
+    cursor: pointer;
+}
+
+.quantity-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+.quantity-input {
+    outline: none;
+    text-align: center;
+    width: 30px; /* Reduce width */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+}
+
+.quantity-input::-webkit-inner-spin-button,
+.quantity-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

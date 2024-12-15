@@ -1,142 +1,170 @@
 <?php
-// manage_orders.php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+session_start();
+require '../includes/dbconnect.php';
 
-// Authentication Check
-// if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-//     header("Location: ../login.php");
-//     exit();
+// // Ensure admin is logged in (example check; adjust as needed)
+// if (!isset($_SESSION['admin_logged_in'])) {
+//     die("Admin not logged in.");
 // }
 
-// Database connection variables
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pharmaease_db";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection Error: " . $conn->connect_error);
-}
-
 // Handle order status update
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['order_id']) && isset($_POST['action'])) {
-    $order_id = $_POST['order_id'];
-    $action = $_POST['action'];
-    $new_status = ($action == 'confirm') ? 'Confirmed' : 'Cancelled';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    $order_id = (int)($_POST['order_id'] ?? 0);
 
-    $update_sql = "UPDATE orders SET status = ? WHERE id = ?";
-    $stmt = $conn->prepare($update_sql);
-    $stmt->bind_param('si', $new_status, $order_id);
-    $stmt->execute();
-    $stmt->close();
+    if ($action === 'confirm' && $order_id > 0) {
+        // Confirm order and set delivery date (3 working days after today excluding weekends)
+        $confirmation_date = new DateTime(); // Today
+        $delivery_date = calculate_delivery_date($confirmation_date, 3); // custom function to calculate delivery
+        $new_status = "Confirmed";
+
+        $sql = "UPDATE orders SET order_status=?, delivery_date=? WHERE order_id=?";
+        $stmt = $conn->prepare($sql);
+        $formatted_delivery_date = $delivery_date->format('Y-m-d H:i:s');
+        $stmt->bind_param("ssi", $new_status, $formatted_delivery_date, $order_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    if ($action === 'reject' && $order_id > 0) {
+        // Reject order
+        $new_status = "Rejected";
+        // Optionally set delivery_date to NULL or leave as is
+        $sql = "UPDATE orders SET order_status=?, delivery_date=order_date WHERE order_id=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $new_status, $order_id);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 
-// Fetch orders from the database
-$sql = "SELECT orders.id, registered_users.first_name, registered_users.last_name, orders.product_name, orders.quantity, orders.status
-        FROM orders
-        JOIN registered_users ON orders.user_id = registered_users.id
-        ORDER BY orders.id DESC";
-$orderResult = $conn->query($sql);
+// Fetch all orders
+$sql = "
+SELECT o.order_id, o.user_id, o.order_status, o.order_date, o.delivery_date, 
+       r.first_name, r.last_name, r.email
+FROM orders o
+JOIN registered_users r ON o.user_id = r.user_id
+ORDER BY o.order_date DESC
+";
+$result = $conn->query($sql);
+
+$orders = [];
+while ($row = $result->fetch_assoc()) {
+    $orders[] = $row;
+}
+$conn->close();
+
+/**
+ * Calculate a delivery date by adding $days working days to $start_date.
+ * Skips Saturday and Sunday.
+ */
+function calculate_delivery_date(DateTime $start_date, $days) {
+    $workDaysToAdd = $days;
+    $date = clone $start_date;
+    // Move forward day by day until we've added 3 working days (excluding weekends)
+    while ($workDaysToAdd > 0) {
+        $date->modify('+1 day');
+        $dayOfWeek = $date->format('N'); // 1 (Mon) to 7 (Sun)
+        if ($dayOfWeek < 6) { // Mon-Fri are < 6
+            $workDaysToAdd--;
+        }
+    }
+    return $date;
+}
 ?>
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Admin - Manage Orders</title>
-    <!-- Link to Homepage CSS for common styles -->
-    <link rel="stylesheet" type="text/css" href="/PharmaEase/PharmaEase-Final/components/homepage/homepage.css?v=1.0">
-    <!-- Link to Admin-Specific CSS -->
-    <link rel="stylesheet" type="text/css" href="/PharmaEase/PharmaEase-Final/components/Admin/admin.css?v=1.0">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="/PharmaEase/PharmaEase-Final/assets/PharmaEaseLogo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders - PharmaEase Admin</title>
+    <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="Admin.css">
+    <style>
+        body {
+            font-family: 'Varela Round', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .order-id {
+            font-weight: 500;
+        }
+        .badge-status {
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Main Navbar -->
-        <header>
-            <img src="/PharmaEase/PharmaEase-Final/assets/PharmaEaseFullLight.png" alt="PharmaEase Logo" class="logo-img">
-            <nav>
-                <a href="/PharmaEase/PharmaEase-Final/components/homepage/homepage.php">Home</a>
-                <a href="/PharmaEase/PharmaEase-Final/components/cart/cart.php">Cart</a>
-                <a href="/PharmaEase/PharmaEase-Final/components/checkout/checkout.php">Checkout</a>
-                <a href="#">My Account</a>
-                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === 1): ?>
-                    <a href="manage_orders.php">Manage Orders</a>
-                    <a href="manage_products.php">Manage Products</a>
-                <?php endif; ?>
-            </nav>
-        </header>
-        <div class="navlist">
-            <div>
-                <a href="allproducts.php">All Products</a>
-                <a href="medicines.php">Prescription Medicines</a>
-                <a href="overthecounter.php">Over-the-Counter</a>
-                <a href="vitsandsupps.php">Vitamins and Supplements</a>
-                <a href="personalcare.php">Personal Care</a>
-                <a href="medsupps.php">Medicinal Supplies</a>
-                <a href="babycare.php">Baby Care</a>
-                <a href="sexualwellness.php">Sexual Wellness</a>
-            </div>
-            <div class="search">
-                <form action="#">
-                    <input type="text" placeholder="Search for Products & Brands" name="search">
-                </form>
-            </div>
+<?php include '../includes/header_admin.php'; ?>
+
+<div class="container my-5">
+    <h1 class="mb-4">Manage Orders</h1>
+    <?php if (empty($orders)): ?>
+        <div class="alert alert-info">No orders found.</div>
+    <?php else: ?>
+        <div class="table-responsive">
+            <table class="table align-middle table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Delivery Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($orders as $order): ?>
+                    <?php
+                    $status = htmlspecialchars($order['order_status']);
+                    $statusBadgeClass = 'bg-secondary text-light';
+                    if ($status === 'Pending') {
+                        $statusBadgeClass = 'bg-warning text-dark';
+                    } elseif ($status === 'Confirmed') {
+                        $statusBadgeClass = 'bg-success';
+                    } elseif ($status === 'Rejected') {
+                        $statusBadgeClass = 'bg-danger';
+                    }
+                    ?>
+                    <tr>
+                        <td class="order-id">#<?php echo $order['order_id']; ?></td>
+                        <td><?php echo htmlspecialchars($order['first_name']) . ' ' . htmlspecialchars($order['last_name']); ?></td>
+                        <td><?php echo htmlspecialchars($order['email']); ?></td>
+                        <td>
+                            <span class="badge <?php echo $statusBadgeClass; ?> badge-status">
+                                <?php echo $status; ?>
+                            </span>
+                        </td>
+                        <td><?php echo date('F j, Y, g:i A', strtotime($order['order_date'])); ?></td>
+                        <td><?php echo date('F j, Y, g:i A', strtotime($order['delivery_date'])); ?></td>
+                        <td>
+                            <?php if ($status === 'Pending'): ?>
+                                <form method="POST" class="d-inline">
+                                    <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                                    <input type="hidden" name="action" value="confirm">
+                                    <button type="submit" class="btn btn-sm btn-primary">Confirm</button>
+                                </form>
+                                <form method="POST" class="d-inline">
+                                    <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                </form>
+                            <?php else: ?>
+                                <span class="text-muted">No actions</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody> 
+            </table>
         </div>
-        <!-- Orders Table -->
-        <div class="orders-table admin-container">
-            <h2 class="admin-header">Manage Orders</h2>
-            <?php if ($orderResult->num_rows > 0): ?>
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while($row = $orderResult->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo $row["id"]; ?></td>
-                                <td><?php echo $row["first_name"] . " " . $row["last_name"]; ?></td>
-                                <td><?php echo $row["product_name"]; ?></td>
-                                <td><?php echo $row["quantity"]; ?></td>
-                                <td><?php echo $row["status"]; ?></td>
-                                <td>
-                                    <?php if ($row["status"] == 'Pending'): ?>
-                                        <form method="POST" style="display:inline;">
-                                            <input type="hidden" name="order_id" value="<?php echo $row["id"]; ?>">
-                                            <button type="submit" name="action" value="confirm" class="btn confirm-btn">Confirm</button>
-                                            <button type="submit" name="action" value="cancel" class="btn cancel-btn">Cancel</button>
-                                        </form>
-                                    <?php else: ?>
-                                        <?php echo $row["status"]; ?>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>No orders found.</p>
-            <?php endif; ?>
-        </div>
-    </div>
+    <?php endif; ?>
+</div>
+
+<?php include '../includes/footer.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<?php
-$conn->close();
-?>

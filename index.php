@@ -27,21 +27,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (($loginUsername === $specificEmail || $loginUsername === $specificUsername) && password_verify($loginPassword, $specificHashedPassword)) {
         $_SESSION['user'] = $loginUsername;
         $_SESSION['role'] = 'admin';
+        session_regenerate_id(true); // Regenerate session ID for security
         header("Location: /PharmaEase/PharmaEase-Final/components/Admin/manage_orders.php");
         exit();
     }
 
-    // Check the database for regular users
-    $stmt = $pdo->prepare("SELECT password FROM registered_users WHERE username = ? OR contact_number = ? OR email = ?");
-    $stmt->execute([$loginUsername, $loginUsername, $loginUsername]);
+    // Check the database for regular users using MySQLi
+    $stmt = $conn->prepare("SELECT user_id, password FROM registered_users WHERE username = ? OR contact_number = ? OR email = ?");
+    if (!$stmt) {
+        die("Preparation failed: " . $conn->error);
+    }
 
-    if ($stmt->rowCount() > 0) {
-        $storedPassword = $stmt->fetchColumn();
+    // Bind parameters (s = string, s = string, s = string)
+    $stmt->bind_param("sss", $loginUsername, $loginUsername, $loginUsername);
+
+    // Execute the statement
+    if (!$stmt->execute()) {
+        die("Execution failed: " . $stmt->error);
+    }
+
+    // Bind the result variables
+    $stmt->bind_result($user_id, $storedPassword);
+    $stmt->store_result(); // Needed to use num_rows
+
+    if ($stmt->num_rows > 0) {
+        $stmt->fetch();
 
         // Verify the password
         if (password_verify($loginPassword, $storedPassword)) {
             $_SESSION['user'] = $loginUsername;
+            $_SESSION['user_id'] = $user_id; // Correctly store user_id
             $_SESSION['role'] = 'user';
+            session_regenerate_id(true); // Regenerate session ID for security
             header("Location: home.php");
             exit();
         } else {
@@ -50,7 +67,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $loginError = "No account found with the provided username, contact number, or email.";
     }
+
+    $stmt->close();
 }
+
 $hasLoginError = !empty($loginError) ? 'true' : 'false';
 ?>
 <!DOCTYPE html>
@@ -167,8 +187,18 @@ $hasLoginError = !empty($loginError) ? 'true' : 'false';
                     });
             });
         } else {
-            document.querySelector(".page-transition").style.display = "none";
-            document.querySelector(".container").style.opacity = 1;
+            const preloader = document.querySelector(".page-transition");
+            const container = document.querySelector(".container");
+            if (preloader && container) {
+                preloader.style.display = "none";
+                container.style.opacity = 1;
+            }
+        }
+
+        function fadeOutAndRedirect(url) {
+            $(".container").fadeOut(500, function() {
+                window.location.href = url;
+            });
         }
     </script>
 </body>

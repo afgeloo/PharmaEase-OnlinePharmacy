@@ -1,28 +1,19 @@
 <?php
-$host = 'localhost';
-$db   = 'pharmaease_db';
-$user = 'root'; 
-$pass = '';    
-$charset = 'utf8mb4';
+// includes/dbconnect.php
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION, // Enable exceptions
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,       // Fetch associative arrays
-    PDO::ATTR_EMULATE_PREPARES   => false,                  // Disable emulation
-];
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "pharmaease_db";
 
-try {
-     $pdo = new PDO($dsn, $user, $pass, $options); // Create PDO instance
-} catch (\PDOException $e) {
-     die('Database connection failed: ' . $e->getMessage()); // Handle connection errors
-}
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Add MySQLi connection
-$conn = new mysqli($host, $user, $pass, $db);
-
+// Check connection
 if ($conn->connect_error) {
-    die('MySQLi Connection failed: ' . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 
+// Optional: Set character set
+$conn->set_charset("utf8mb4");
 ?>
