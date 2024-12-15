@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch orders for the logged-in user
-$sql = "SELECT order_id, order_status, order_date FROM orders WHERE user_id = ? ORDER BY order_date DESC";
+$sql = "SELECT order_id, order_number, order_status, order_date FROM orders WHERE user_id = ? ORDER BY order_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -97,6 +97,7 @@ $conn->close();
         <?php foreach ($orders as $index => $order): ?>
         <?php
             $order_id = $order['order_id'];
+            $order_number = $order['order_number'];
             // Fetch order items
             require 'includes/dbconnect.php';
             $sql = "
@@ -127,7 +128,7 @@ $conn->close();
             <div class="card-header" id="heading<?php echo $index; ?>">
                 <button class="btn btn-link d-flex justify-content-between align-items-center w-100 text-decoration-none order-header" data-bs-toggle="collapse" data-bs-target="#collapse<?php echo $index; ?>" aria-expanded="true" aria-controls="collapse<?php echo $index; ?>">
                     <div class="text-start">
-                        <span class="order-id">Order #<?php echo htmlspecialchars($order_id); ?></span> 
+                        <span class="order-id"><?php echo htmlspecialchars($order_number); ?></span> 
                         <span class="badge bg-info text-dark ms-2"><?php echo htmlspecialchars($order['order_status']); ?></span>
                     </div>
                     <div class="text-end">
