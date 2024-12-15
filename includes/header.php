@@ -88,6 +88,10 @@ $categoryResult = $conn->query($categorySql);
         padding: 10px 20px; /* Add padding */
     }
     
+    nav a{
+        color: #FFF9F0 !important;
+    }
+
     input {
         font-size: 18px;
     }
