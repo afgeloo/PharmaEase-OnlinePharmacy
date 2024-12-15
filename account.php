@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $firstName = $_POST["first_name"];
     $lastName = $_POST["last_name"];
     $birthday = $_POST["birthday"];
-    $age = $_POST["age"];
     $contactNumber = $_POST["contact_number"];
     $email = $_POST["email"];
     $address = $_POST["address"];
@@ -25,14 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     // Validate inputs
     if (empty($firstName)) $errors[] = "First Name is required";
     if (empty($lastName)) $errors[] = "Last Name is required";
-    if (empty($age)) {
-        $errors[] = "Age is required";
-    } elseif (!is_numeric($age) || $age < 0) {
-        $errors[] = "Age must be a positive number";
-    } elseif ($age < 13) {
-        $errors[] = "You must be at least 13 years old";
-    }
-    
     if (empty($birthday)) {
         $errors[] = "Birthday is required";
     } else {
@@ -42,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if ($birthYear < 1000 || $birthYear > $currentYear) {
             $errors[] = "Birth year must be a valid 4-digit number and not exceed the current year";
         }
-    }    
+    }
 
     if (empty($contactNumber)) {
         $errors[] = "Contact Number is required";
@@ -55,16 +46,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     if (empty($address)) $errors[] = "Address is required";
 
     if (empty($errors)) {
-        $sql = "UPDATE registered_users SET first_name=?, last_name=?, birthday=?, age=?, contact_number=?, email=?, address=? WHERE user_id=?";
+        $sql = "UPDATE registered_users SET first_name=?, last_name=?, birthday=?, contact_number=?, email=?, address=? WHERE user_id=?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssi", $firstName, $lastName, $birthday, $age, $contactNumber, $email, $address, $user_id);
+        $stmt->bind_param("ssssssi", $firstName, $lastName, $birthday,  $contactNumber, $email, $address, $user_id);
         $stmt->execute();
         $stmt->close();
     }
 }
 
 // Fetch user data
-$sql = "SELECT first_name, last_name, birthday, age, contact_number, email, address, username 
+$sql = "SELECT first_name, last_name, birthday, contact_number, email, address, username 
         FROM registered_users 
         WHERE user_id = ? LIMIT 1";
 $stmt = $conn->prepare($sql);
@@ -102,81 +93,6 @@ if (!$user) {
             margin-bottom: 20px;
         }
     </style>
-    <script>
-    function calculateAge() {
-        const birthdayInput = document.getElementById('birthday'); // Get the input element
-        const ageInput = document.getElementById('age');
-        const birthday = new Date(birthdayInput.value); // Parse the input value as a Date
-        const today = new Date();
-
-        if (isNaN(birthday)) {
-            ageInput.value = ""; // Clear the age if the input is invalid
-            return;
-        }
-
-        let age = today.getFullYear() - birthday.getFullYear();
-        const monthDiff = today.getMonth() - birthday.getMonth();
-        const dayDiff = today.getDate() - birthday.getDate();
-
-        // Adjust for incomplete birthdays in the current year
-        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-            age--;
-        }
-
-        // Prevent negative age
-        age = Math.max(age, 0);
-        ageInput.value = age;
-
-        // Restrict invalid birth years and future dates
-        restrictBirthYear();
-    }
-
-    function restrictBirthYear() {
-        const birthdayInput = document.getElementById('birthday');
-        const value = birthdayInput.value;
-
-        if (value) {
-            const birthYear = parseInt(value.split('-')[0], 10); // Extract year portion
-            const currentYear = new Date().getFullYear();
-            const maxDate = new Date().toISOString().split('T')[0]; // Current date in YYYY-MM-DD
-
-            // Check if birth year is valid
-            if (birthYear < 1000 || birthYear > currentYear) {
-                alert("Invalid birth year. Please enter a valid year (4 digits) that does not exceed the current year.");
-                birthdayInput.value = ""; // Clear invalid input
-                return;
-            }
-
-            // Check if date is in the future
-            if (value > maxDate) {
-                alert("The selected date cannot be in the future.");
-                birthdayInput.value = ""; // Clear invalid input
-            }
-        }
-    }
-
-    function validateContactNumber(input) {
-    // Remove non-digit characters and limit to 11 digits
-    input.value = input.value.replace(/\D/g, '').substring(0, 11);
-
-    // Ensure the contact number starts with '09'
-    if (!input.value.startsWith('09')) {
-        input.value = '09';
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const birthdayInput = document.getElementById('birthday');
-    const contactNumberInput = document.getElementById('contact_number');
-
-    // Restrict editing for birthday
-    birthdayInput.addEventListener('keydown', (event) => event.preventDefault());
-
-    // Validate contact number on input
-    contactNumberInput.addEventListener('input', () => validateContactNumber(contactNumberInput));
-});
-
-    </script>
 </head>
 <body>
 <?php include 'includes/header.php'; ?>
@@ -212,26 +128,25 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="row g-3 mt-2">
-            <div class="col-md-6">
-    <label for="birthday" class="form-label">Birthday</label>
-    <input type="date" class="form-control" id="birthday" name="birthday" value="<?php echo htmlspecialchars($user['birthday']); ?>" readonly required>
-</div>
-<div class="col-md-6">
-    <label for="contact_number" class="form-label">Contact Number</label>
-    <input 
-        type="text" 
-        class="form-control" 
-        id="contact_number" 
-        name="contact_number" 
-        value="<?php echo htmlspecialchars($user['contact_number']); ?>" 
-        readonly 
-        required 
-        maxlength="11" 
-        pattern="[0-9]{11}" 
-        inputmode="numeric"
-    >
-</div>
-
+                <div class="col-md-6">
+                    <label for="birthday" class="form-label">Birthday</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday" value="<?php echo htmlspecialchars($user['birthday']); ?>" readonly required>
+                </div>
+                <div class="col-md-6">
+                    <label for="contact_number" class="form-label">Contact Number</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="contact_number" 
+                        name="contact_number" 
+                        value="<?php echo htmlspecialchars($user['contact_number']); ?>" 
+                        readonly 
+                        required 
+                        maxlength="11" 
+                        pattern="[0-9]{11}" 
+                        inputmode="numeric"
+                    >
+                </div>
             </div>
 
             <div class="row g-3 mt-2">
