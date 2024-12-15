@@ -47,7 +47,7 @@ $result = $stmt->get_result();
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/home.css?v=<?php echo time(); ?>">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <title>Products List - PharmaEase</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -223,7 +223,7 @@ $result = $stmt->get_result();
             echo "No products found.";
         }
         ?>
-        
+        </div>
     </div>
 
         <?php include 'includes/footer.php'; ?>

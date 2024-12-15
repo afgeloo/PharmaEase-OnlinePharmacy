@@ -245,7 +245,7 @@ $result = $conn->query($sql);
             echo "No products found.";
         }
         ?>
-        
+        </div>
     </div>
 
         <?php include 'includes/footer.php'; ?>
