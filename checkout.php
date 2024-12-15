@@ -4,7 +4,8 @@ require 'includes/dbconnect.php';
 
 // Ensure user is logged in
 if (!isset($_SESSION['user_id'])) {
-    die("User not logged in.");
+    header("Location: index.php");
+    exit();
 }
 
 $user_id = $_SESSION['user_id'];
@@ -55,9 +56,18 @@ $tax_rate = 0.05;
 $tax = $total * $tax_rate;
 $total_with_tax = $total + $tax;
 
+// Calculate delivery date excluding weekends
+// Calculate delivery date excluding weekends
 $delivery_date = new DateTime();
-$delivery_date->modify('+3 days');
+$days_to_add = 3;
+while ($days_to_add > 0) {
+    $delivery_date->modify('+2 day');
+    if ($delivery_date->format('N') < 6) { // 1 (Monday) to 5 (Friday)
+        $days_to_add--;
+    }
+}
 $expected_delivery = $delivery_date->format('F j, Y');
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -150,6 +150,7 @@ $conn->close();
                         <input type="number" name="quantity" data-quantity-target class="form-control quantity-input mx-2" value="1" min="1">
                         <button type="button" data-quantity-plus class="btn btn-outline-secondary">+</button>
                     </div>
+                    
                     <button type="submit" class="btn btn-success">Add to Cart</button>
                 </form>
 

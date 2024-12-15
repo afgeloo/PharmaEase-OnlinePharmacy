@@ -63,8 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         }
     }    
 
-    if (empty($contactNumber)) $contactError = "Contact Number is required";
-    elseif (!preg_match("/^\d{11}$/", $contactNumber)) $contactError = "Contact number must be 11 digits";
+    if (empty($contactNumber)) {
+        $contactError = "Contact Number is required";
+    } elseif (!preg_match("/^09\d{9}$/", $contactNumber)) {
+        $contactError = "Contact number must start with 09 and be 11 digits long";
+    }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $emailError = "Email is not valid";
 
@@ -203,9 +206,21 @@ function restrictBirthYear() {
 }
 
 
-        function validateContactNumber(input) {
-            input.value = input.value.replace(/\D/g, '').substring(0, 11);
-        }
+    function validateContactNumber(input) {
+    // Remove non-digit characters
+    input.value = input.value.replace(/\D/g, '').substring(0, 11); 
+
+    // If the number is less than 11 digits, add '09' at the start
+    if (input.value.length < 11) {
+        input.value = '09' + input.value.substring(2);
+    }
+
+    // If it starts with '09', keep it, else add '09' at the start
+    if (!input.value.startsWith('09')) {
+        input.value = '09' + input.value.substring(2);
+    }
+}
+
     </script>
 </head>
 <body>
