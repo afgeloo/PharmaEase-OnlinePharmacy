@@ -121,7 +121,7 @@ $hasLoginError = !empty($loginError) ? 'true' : 'false';
                         <input type="checkbox" id="remember-me">
                         <label for="remember-me">Remember me</label>
                     </div>
-                    <span><a href="#" onclick="fadeOutAndRedirect('/PharmaEase/PharmaEase-Final/components/main/forgotpassword.php')">Forget Password</a></span>
+                    <span><a href="#" onclick="fadeOutAndRedirect('./authentication/forgotpassword.php')">Forget Password</a></span>
                 </div>
                 <button type="submit" class="button" name="login"><span><strong>LOG IN</strong></span></button>
                 <?php if (!empty($loginError)) echo "<p style='color:red;'>$loginError</p>"; ?>
