@@ -29,8 +29,35 @@ while ($row = $result->fetch_assoc()) {
     $total += (float)$row['subtotal_price'];
 }
 
+// Fetch the user's address
+$addressSql = "
+    SELECT address
+    FROM registered_users
+    WHERE user_id = ?
+";
+$addressStmt = $conn->prepare($addressSql);
+$addressStmt->bind_param("i", $user_id);
+$addressStmt->execute();
+$addressResult = $addressStmt->get_result();
+
+$address = '';
+if ($addressResult->num_rows > 0) {
+    $addressRow = $addressResult->fetch_assoc();
+    $address = $addressRow['address'];
+}
+
 $stmt->close();
+$addressStmt->close();
 $conn->close();
+
+// Define tax rate
+$tax_rate = 0.05;
+$tax = $total * $tax_rate;
+$total_with_tax = $total + $tax;
+
+$delivery_date = new DateTime();
+$delivery_date->modify('+3 days');
+$expected_delivery = $delivery_date->format('F j, Y');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,10 +67,11 @@ $conn->close();
     <title>Pre-Checkout - PharmaEase</title>
     <link rel="shortcut icon" type="image/png" href="assets/PharmaEaseLogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/home.css">
     <style>
         body {
             font-family: 'Varela Round', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #FFF9F0;
         }
         .table > :not(:first-child) {
             border-top: 2px solid #dee2e6;
@@ -83,8 +111,20 @@ $conn->close();
                         </tr>
                         <?php endforeach; ?>
                         <tr class="fw-bold">
-                            <td colspan="3" class="text-end">Total:</td>
+                            <td colspan="3" class="text-end">Grand Total:</td>
                             <td>₱<?php echo number_format($total, 2); ?></td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <td colspan="3" class="text-end">Tax (<?php echo $tax_rate * 100; ?>%):</td>
+                            <td>₱<?php echo number_format($tax, 2); ?></td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <td colspan="3" class="text-end">Final Total:</td>
+                            <td>₱<?php echo number_format($total_with_tax, 2); ?></td>
+                        </tr>
+                        <tr class="fw-bold">
+                            <td colspan="3" class="text-end">Expected Delivery:</td>
+                            <td><?php echo $expected_delivery; ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -92,7 +132,7 @@ $conn->close();
             <form action="checkout_confirmation.php" method="POST">
                 <div class="mb-3">
                     <label for="shippingAddress" class="form-label">Shipping Address</label>
-                    <textarea class="form-control" id="shippingAddress" name="shipping_address" rows="3" required></textarea>
+                    <textarea class="form-control" id="shippingAddress" name="shipping_address" rows="3" required><?php echo htmlspecialchars($address); ?></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="paymentMethod" class="form-label">Payment Method</label>
@@ -108,7 +148,7 @@ $conn->close();
         </div>
     <?php endif; ?>
 </div>
-
+</div>
 <?php include 'includes/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

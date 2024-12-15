@@ -2,7 +2,7 @@
 session_start();
 require '../includes/dbconnect.php';
 
-// // Ensure admin is logged in (example check; adjust as needed)
+// Ensure admin is logged in (example check; adjust as needed)
 // if (!isset($_SESSION['admin_logged_in'])) {
 //     die("Admin not logged in.");
 // }
@@ -13,17 +13,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $order_id = (int)($_POST['order_id'] ?? 0);
 
     if ($action === 'confirm' && $order_id > 0) {
-        // Confirm order and set delivery date (3 working days after today excluding weekends)
+        // Confirm order and set delivery date (3 days after today)
         $confirmation_date = new DateTime(); // Today
         $delivery_date = calculate_delivery_date($confirmation_date, 3); // custom function to calculate delivery
         $new_status = "Confirmed";
 
         $sql = "UPDATE orders SET order_status=?, delivery_date=? WHERE order_id=?";
         $stmt = $conn->prepare($sql);
-        $formatted_delivery_date = $delivery_date->format('Y-m-d H:i:s');
-        $stmt->bind_param("ssi", $new_status, $formatted_delivery_date, $order_id);
-        $stmt->execute();
-        $stmt->close();
+        if ($stmt) {
+            $formatted_delivery_date = $delivery_date->format('Y-m-d H:i:s');
+            $stmt->bind_param("ssi", $new_status, $formatted_delivery_date, $order_id);
+            if ($stmt->execute()) {
+                echo "Order #$order_id confirmed with delivery date $formatted_delivery_date.";
+            } else {
+                echo "Error executing statement: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $conn->error;
+        }
     }
 
     if ($action === 'reject' && $order_id > 0) {
@@ -32,9 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Optionally set delivery_date to NULL or leave as is
         $sql = "UPDATE orders SET order_status=?, delivery_date=order_date WHERE order_id=?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $new_status, $order_id);
-        $stmt->execute();
-        $stmt->close();
+        if ($stmt) {
+            $stmt->bind_param("si", $new_status, $order_id);
+            if ($stmt->execute()) {
+                echo "Order #$order_id rejected.";
+            } else {
+                echo "Error executing statement: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $conn->error;
+        }
     }
 }
 
@@ -55,20 +71,11 @@ while ($row = $result->fetch_assoc()) {
 $conn->close();
 
 /**
- * Calculate a delivery date by adding $days working days to $start_date.
- * Skips Saturday and Sunday.
+ * Calculate a delivery date by adding $days to $start_date.
  */
 function calculate_delivery_date(DateTime $start_date, $days) {
-    $workDaysToAdd = $days;
     $date = clone $start_date;
-    // Move forward day by day until we've added 3 working days (excluding weekends)
-    while ($workDaysToAdd > 0) {
-        $date->modify('+1 day');
-        $dayOfWeek = $date->format('N'); // 1 (Mon) to 7 (Sun)
-        if ($dayOfWeek < 6) { // Mon-Fri are < 6
-            $workDaysToAdd--;
-        }
-    }
+    $date->modify("+{$days} days");
     return $date;
 }
 ?>

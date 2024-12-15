@@ -8,8 +8,10 @@
 }
 
 body {
-    background-color: #FFF9F0;
+	background-color: #FFF9F0;
 }
+
+
 
 .container {
     width: 100%;
@@ -233,6 +235,12 @@ main .section .section-content {
     margin-top: 20px;
 }
 
+.product-info .product-addtocart {
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* ...existing code... */
 .product-info .product-addtocart {
     width: 100%;
     margin: 20px 0;

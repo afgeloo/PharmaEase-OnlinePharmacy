@@ -85,11 +85,18 @@ $conn->close();
             $stmt->execute();
             $itemsResult = $stmt->get_result();
             $orderItems = [];
+            $orderTotal = 0.00;
             while ($itemRow = $itemsResult->fetch_assoc()) {
                 $orderItems[] = $itemRow;
+                $orderTotal += (float)$itemRow['subtotal_price'];
             }
             $stmt->close();
             $conn->close();
+
+            // Calculate tax and total with tax
+            $tax_rate = 0.05;
+            $tax = $orderTotal * $tax_rate;
+            $total_with_tax = $orderTotal + $tax;
         ?>
         <div class="card order-card">
             <div class="card-header" id="heading<?php echo $index; ?>">
@@ -119,21 +126,25 @@ $conn->close();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
-                                $orderTotal = 0.00;
-                                foreach ($orderItems as $item): 
-                                    $orderTotal += (float)$item['subtotal_price'];
-                                ?>
+                                <?php foreach ($orderItems as $item): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                    <td class="product-name"><?php echo htmlspecialchars($item['product_name']); ?></td>
                                     <td>₱<?php echo number_format($item['product_price'], 2); ?></td>
                                     <td><?php echo (int)$item['quantity']; ?></td>
                                     <td>₱<?php echo number_format($item['subtotal_price'], 2); ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 <tr class="fw-bold">
-                                    <td colspan="3" class="text-end">Total:</td>
+                                    <td colspan="3" class="text-end">Grand Total:</td>
                                     <td>₱<?php echo number_format($orderTotal, 2); ?></td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td colspan="3" class="text-end">Tax (<?php echo $tax_rate * 100; ?>%):</td>
+                                    <td>₱<?php echo number_format($tax, 2); ?></td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td colspan="3" class="text-end">Final Total:</td>
+                                    <td>₱<?php echo number_format($total_with_tax, 2); ?></td>
                                 </tr>
                             </tbody>
                         </table>
