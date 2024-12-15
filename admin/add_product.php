@@ -1,5 +1,4 @@
 <?php
-// filepath: /c:/xampp/htdocs/PharmaEase/admin/add_product.php
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -12,6 +11,14 @@ $uploadDir = '../assets/ProductPics/'; // Adjust the path as needed
 // Ensure the upload directory exists
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
+}
+
+// Fetch Categories for Dropdown with Error Handling
+$categorySql = "SELECT category_id, category_name FROM product_categories ORDER BY category_name ASC";
+$categoryResult = $conn->query($categorySql);
+
+if (!$categoryResult) {
+    $errorMessage = "Error fetching categories: " . $conn->error;
 }
 
 // Handle product addition
@@ -100,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
             }
 
             // Assign the uploaded image path
-            if ($uploadedCount < 3) {
+            if (!empty($uploadResult)) {
                 $imageKey = 'image_name_' . ($uploadedCount + 1);
                 $imagePaths[$imageKey] = $uploadResult;
                 $uploadedCount++;
@@ -175,14 +182,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_product'])) {
                 <label for="category_id">Category:</label>
                 <select id="category_id" name="category_id" required>
                     <option value="">Select Category</option>
-                    <?php if ($categoryResult->num_rows > 0): ?>
+                    <?php if (isset($categoryResult) && $categoryResult->num_rows > 0): ?>
                         <?php while($category = $categoryResult->fetch_assoc()): ?>
                             <option value="<?php echo htmlspecialchars($category['category_id']); ?>">
                                 <?php echo htmlspecialchars($category['category_name']); ?>
                             </option>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <option value="">No Categories Available</option>
+                        <?php if (isset($errorMessage) && strpos($errorMessage, 'fetching categories') !== false): ?>
+                            <option value=""><?php echo htmlspecialchars($errorMessage); ?></option>
+                        <?php else: ?>
+                            <option value="">No Categories Available</option>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </select>
 

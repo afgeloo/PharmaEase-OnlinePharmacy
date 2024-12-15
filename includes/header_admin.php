@@ -4,8 +4,10 @@
     <!-- <a href="homepage.php">Home</a> -->
     <!-- <a href="cart.php">Cart</a>
     <a href="checkout.php">Checkout</a>
-    <a href="orders.php">Track Order</a>
-    <a href="account.php">My Account</a> -->
+    <a href="orders.php">Track Order</a> -->
+    <a href="admin_dashboard.php">Dashboard</a> 
+    <a href="manage_orders.php">Orders</a> 
+    <a href="manage_products.php">Products</a> 
     <a href="../authentication/logout.php"><ion-icon name="log-out-outline"></ion-icon> Sign Out</a>
     </nav>
 </header>

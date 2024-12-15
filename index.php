@@ -19,18 +19,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $loginUsername = trim($_POST["username"]);
     $loginPassword = $_POST["password"];
 
-    // Admin credentials (hashed for security)
-    $specificEmail = "dennislaysonjr3@gmail.com";
-    $specificUsername = "dslaysonjr";
-    $specificHashedPassword = '$2y$10$eImiTXuWVxfM37uY4JANjQ=='; // Replace with the correct hash
-
-    if (($loginUsername === $specificEmail || $loginUsername === $specificUsername) && password_verify($loginPassword, $specificHashedPassword)) {
-        $_SESSION['user'] = $loginUsername;
+    // === Admin Credentials ===
+    $adminUsername = "admin";
+    $adminPassword = "admin"; // In production, use a hashed password
+   
+    // Check if credentials match admin
+    if ($loginUsername === $adminUsername && $loginPassword === $adminPassword) {
+        $_SESSION['user'] = $adminUsername;
         $_SESSION['role'] = 'admin';
         session_regenerate_id(true); // Regenerate session ID for security
-        header("Location: /PharmaEase/PharmaEase-Final/components/Admin/manage_orders.php");
+        header("Location: admin/admin_dashboard.php");
         exit();
     }
+
+    // === Regular User Authentication ===
 
     // Check the database for regular users using MySQLi
     $stmt = $conn->prepare("SELECT user_id, password FROM registered_users WHERE username = ? OR contact_number = ? OR email = ?");
