@@ -73,11 +73,21 @@ $conn->close();
 /**
  * Calculate a delivery date by adding $days to $start_date.
  */
+
 function calculate_delivery_date(DateTime $start_date, $days) {
     $date = clone $start_date;
-    $date->modify("+{$days} days");
+    $added_days = 0;
+
+    while ($added_days < $days) {
+        $date->modify('+2 day');
+        if ($date->format('N') < 6) { // 1 (Monday) to 5 (Friday) are weekdays
+            $added_days++;
+        }
+    }
+
     return $date;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

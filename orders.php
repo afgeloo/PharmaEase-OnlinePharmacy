@@ -4,7 +4,8 @@ require 'includes/dbconnect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    die("User not logged in.");
+    header("Location: index.php");
+    exit();
 }
 
 $user_id = $_SESSION['user_id'];
@@ -18,10 +19,20 @@ $ordersResult = $stmt->get_result();
 
 $orders = [];
 while ($row = $ordersResult->fetch_assoc()) {
-    // Calculate delivery date by adding 3 days to the order date
     $order_date = new DateTime($row['order_date']);
-    $order_date->modify('+3 days');
-    $row['delivery_date'] = $order_date->format('F j, Y, g:i A');
+    
+    // Calculate delivery date excluding weekends
+    $delivery_date = new DateTime();
+    $days_to_add = 3; // Number of business days to add
+    
+    while ($days_to_add > 0) {
+        $delivery_date->modify('+2 day');
+        if ($delivery_date->format('N') < 6) { // 1 (Monday) to 5 (Friday) are business days
+            $days_to_add--;
+        }
+    }
+    
+    $row['delivery_date'] = $delivery_date->format('F j, Y, g:i A');
     $orders[] = $row;
 }
 
