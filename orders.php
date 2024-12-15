@@ -62,6 +62,13 @@ $conn->close();
         .no-orders p {
             margin-bottom: 0;
         }
+        .delivery-date {
+        background-color: #f8f9fa; /* Same as table-light background color */
+        padding: 10px;
+        border-radius: .375rem 0 0 0; /* Rounded corners on top left */
+        margin-bottom: 0; /* Remove bottom margin */
+        margin-top: 0;
+    }
     </style>
 </head>
 <body>
@@ -114,13 +121,16 @@ $conn->close();
                     </div>
                     <div class="text-end">
                         <small>Ordered on: <?php echo date('F j, Y, g:i A', strtotime($order['order_date'])); ?></small>
+                        <?php if ($order['order_status'] === 'Pending'): ?>
+                       
+                        <?php endif; ?>
                     </div>
                 </button>
             </div>
 
             <div id="collapse<?php echo $index; ?>" class="accordion-collapse collapse" aria-labelledby="heading<?php echo $index; ?>" data-bs-parent="#ordersAccordion">
                 <div class="card-body">
-                    <p><strong>Delivery Date:</strong> <?php echo $order['delivery_date']; ?></p>
+                    <p class="delivery-date"><strong>Delivery Date:</strong> <?php echo $order['delivery_date']; ?></p>
                     <?php if (!empty($orderItems)): ?>
                     <div class="table-responsive">
                         <table class="table align-middle">
@@ -150,14 +160,17 @@ $conn->close();
                                     <td>₱<?php echo number_format($tax, 2); ?></td>
                                 </tr>
                                 <tr class="fw-bold">
-                                    <td colspan="3" class="text-end">Final Total:</td>
+                                    <td colspan="3" class="text-end">Total with Tax:</td>
                                     <td>₱<?php echo number_format($total_with_tax, 2); ?></td>
                                 </tr>
+                
                             </tbody>
                         </table>
                     </div>
-                    <?php else: ?>
-                    <p>No items found for this order.</p>
+                    <form method="post" action="cancel_order.php" class="d-inline">
+                            <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                            <button type="submit" class="btn btn-danger btn-sm ms-2">Cancel Order</button>
+                        </form>
                     <?php endif; ?>
                 </div>
             </div>
