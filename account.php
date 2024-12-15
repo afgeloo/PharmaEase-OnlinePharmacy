@@ -60,7 +60,7 @@ if (!$user) {
     <style>
         body {
             font-family: 'Varela Round', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #FFF9F0;
         }
         .account-form input[readonly], 
         .account-form textarea[readonly] {
