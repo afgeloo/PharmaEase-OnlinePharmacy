@@ -42,7 +42,6 @@ $categoryResult = $conn->query($categorySql);
 
     body {
         font-family: Arial, sans-serif;
-        margin: 0;
         background-color: #FFF9F0;
     }
 
@@ -73,7 +72,8 @@ $categoryResult = $conn->query($categorySql);
         color: #FFF9F0;
         text-decoration: none;
         margin-right: 20px;
-        font-size: 16px;
+        font-size: 18px;
+        margin-top: 10px;
     }
 
     nav a:hover {
@@ -90,13 +90,13 @@ $categoryResult = $conn->query($categorySql);
         top: 80px; /* Adjust based on header height */
         background-color: #FFF9F0;
         z-index: 999; /* Lower than header but above content */
-        padding: 10px 20px;
+        padding: 20px 20px;
         font-size: 18px;
     }
 
     .navlist a {
         color: #333333;
-        font-size: 16px;
+        font-size: 18px;
         text-decoration: none;
         margin-right: 20px;
     }
@@ -110,7 +110,7 @@ $categoryResult = $conn->query($categorySql);
     }
 
     .sign-out-img {
-        font-size: 24px;
+        font-size: 26px;
         color: #FFF9F0;
         vertical-align: middle;
     }

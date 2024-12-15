@@ -52,11 +52,12 @@ $result = $stmt->get_result();
     <title>Products List - PharmaEase</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/products.js"></script>
-</head>
+    <script src="js/chatbot.js"></script></head>
 <body>
     <div class="container">
         <?php include 'includes/header.php'; ?>
 
+        <br>
         <h2>
         <?php 
             if ($selected_category > 0) {
@@ -223,6 +224,37 @@ $result = $stmt->get_result();
 
         <?php include 'includes/footer.php'; ?>
     </div>
+    <div class="floating-chat">
+    <i class="fa fa-comments" aria-hidden="true"><ion-icon name="chatbubbles-outline"></ion-icon></i>
+    <div class="chat">
+        <div class="header">
+            <span class="title">
+                Ask PharmaSense Bot
+            </span>
+            <button>
+                <i class="fa fa-times" aria-hidden="true">x</i> <!-- Add 'x' symbol here -->
+            </button>
+        </div>
+        <ul class="messages">
+            <li class="other">Hi! I'm PharmaSense, a chatbot designed to help you know more! Ask away and navigate with ease. 😉🩹💊</li>
+        </ul>
+        <div class="footerchat">
+            <div class="text-box" contenteditable="true" disabled="true"></div>
+            <button id="sendMessage">send</button>
+        </div>
+        <div class="predefined-messages">
+            <button class="predefined-message">What is PharmaEase?</button>
+            <button class="predefined-message">How to order?</button>
+            <button class="predefined-message">What products do you offer?</button>
+            <!-- Add more predefined message buttons here -->
+        </div>
+        <div class="search-mode-container">
+            <button id="toggleSearchMode">Switch Mode</button>
+            <span class="search-mode">General Chat Mode</span>
+        </div>
+    </div>
+</div>
+    <script>
 
     <script src="js/three.js"></script>
     <script src="js/flip.js"></script>

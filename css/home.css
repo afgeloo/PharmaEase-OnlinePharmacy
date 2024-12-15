@@ -396,7 +396,7 @@
   a {
 	margin-right: 39px;
 	font-size: 14px;
-	color: #FFF9F0;
+	color: #ffffff;
 	text-decoration: none;
   }
   
@@ -404,7 +404,7 @@
   /* Navlist 2nd nav bar with search icon */
   .navlist a:link, .navlist a:visited, .navlist a:active {
 	color: #333333;
-	font-size: 14px;
+	font-size: 17px;
 	margin-right: 20px;
   }
   
@@ -419,16 +419,15 @@
   .navlist {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	justify-content: center;
 	gap: 20px;
 	position: sticky;
-	top: 60px; /* Adjust based on header height */
-	background-color: #FFF9F0; /* Match body background color */
-	z-index: 1001; /* Ensure it stays above the header */
-	padding: 10px 20px; /* Add padding */
-  }
+	top: 80px; /* Adjust based on header height */
+	background-color: #FFF9F0;
+	z-index: 999; /* Lower than header but above content */
+	padding: 10px 20px;
+	font-size: 18px;
+	}
   
   input {
 	font-size: 18px;
