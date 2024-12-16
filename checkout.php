@@ -51,17 +51,15 @@ $stmt->close();
 $addressStmt->close();
 $conn->close();
 
-// Define tax rate
-$tax_rate = 0.05;
-$tax = $total * $tax_rate;
-$total_with_tax = $total + $tax;
+// Define shipping fee
+$shipping_fee = 50.00;
+$total_with_shipping = $total + $shipping_fee;
 
-// Calculate delivery date excluding weekends
 // Calculate delivery date excluding weekends
 $delivery_date = new DateTime();
 $days_to_add = 3;
 while ($days_to_add > 0) {
-    $delivery_date->modify('+2 day');
+    $delivery_date->modify('+1 day');
     if ($delivery_date->format('N') < 6) { // 1 (Monday) to 5 (Friday)
         $days_to_add--;
     }
@@ -126,12 +124,12 @@ $expected_delivery = $delivery_date->format('F j, Y');
                             <td>₱<?php echo number_format($total, 2); ?></td>
                         </tr>
                         <tr class="fw-bold">
-                            <td colspan="3" class="text-end">Tax (<?php echo $tax_rate * 100; ?>%):</td>
-                            <td>₱<?php echo number_format($tax, 2); ?></td>
+                            <td colspan="3" class="text-end">Shipping Fee:</td>
+                            <td>₱<?php echo number_format($shipping_fee, 2); ?></td>
                         </tr>
                         <tr class="fw-bold">
                             <td colspan="3" class="text-end">Final Total:</td>
-                            <td>₱<?php echo number_format($total_with_tax, 2); ?></td>
+                            <td>₱<?php echo number_format($total_with_shipping, 2); ?></td>
                         </tr>
                         <tr class="fw-bold">
                             <td colspan="3" class="text-end">Expected Delivery:</td>

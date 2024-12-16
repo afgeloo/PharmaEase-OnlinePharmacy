@@ -26,7 +26,7 @@ while ($row = $ordersResult->fetch_assoc()) {
     $days_to_add = 3; // Number of business days to add
     
     while ($days_to_add > 0) {
-        $delivery_date->modify('+2 day');
+        $delivery_date->modify('+1 day');
         if ($delivery_date->format('N') < 6) { // 1 (Monday) to 5 (Friday) are business days
             $days_to_add--;
         }
@@ -53,7 +53,7 @@ $conn->close();
         body {
             font-family: 'Varela Round', sans-serif;
             background-color: #FFF9F0;
-            }
+        }
         .order-card {
             margin-bottom: 15px;
         }
@@ -74,12 +74,12 @@ $conn->close();
             margin-bottom: 0;
         }
         .delivery-date {
-        background-color: #f8f9fa; /* Same as table-light background color */
-        padding: 10px;
-        border-radius: .375rem 0 0 0; /* Rounded corners on top left */
-        margin-bottom: 0; /* Remove bottom margin */
-        margin-top: 0;
-    }
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: .375rem 0 0 0;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -101,7 +101,7 @@ $conn->close();
             // Fetch order items
             require 'includes/dbconnect.php';
             $sql = "
-                SELECT oi.quantity, oi.subtotal_price, oi.total_price, p.product_name, p.product_price
+                SELECT oi.quantity, oi.subtotal_price, p.product_name, p.product_price
                 FROM order_items oi
                 JOIN products p ON oi.product_id = p.product_id
                 WHERE oi.order_id = ?
@@ -119,10 +119,9 @@ $conn->close();
             $stmt->close();
             $conn->close();
 
-            // Calculate tax and total with tax
-            $tax_rate = 0.05;
-            $tax = $orderTotal * $tax_rate;
-            $total_with_tax = $orderTotal + $tax;
+            // Add shipping fee
+            $shipping_fee = 50.00;
+            $total_with_shipping = $orderTotal + $shipping_fee;
         ?>
         <div class="card order-card">
             <div class="card-header" id="heading<?php echo $index; ?>">
@@ -168,12 +167,12 @@ $conn->close();
                                     <td>₱<?php echo number_format($orderTotal, 2); ?></td>
                                 </tr>
                                 <tr class="fw-bold">
-                                    <td colspan="3" class="text-end">Tax (<?php echo $tax_rate * 100; ?>%):</td>
-                                    <td>₱<?php echo number_format($tax, 2); ?></td>
+                                    <td colspan="3" class="text-end">Shipping Fee:</td>
+                                    <td>₱<?php echo number_format($shipping_fee, 2); ?></td>
                                 </tr>
                                 <tr class="fw-bold">
-                                    <td colspan="3" class="text-end">Total with Tax:</td>
-                                    <td>₱<?php echo number_format($total_with_tax, 2); ?></td>
+                                    <td colspan="3" class="text-end">Total:</td>
+                                    <td>₱<?php echo number_format($total_with_shipping, 2); ?></td>
                                 </tr>
                 
                             </tbody>
