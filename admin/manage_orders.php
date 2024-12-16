@@ -79,7 +79,7 @@ function calculate_delivery_date(DateTime $start_date, $days) {
     $added_days = 0;
 
     while ($added_days < $days) {
-        $date->modify('+2 day');
+        $date->modify('+1 day');
         if ($date->format('N') < 6) { // 1 (Monday) to 5 (Friday) are weekdays
             $added_days++;
         }
@@ -87,6 +87,17 @@ function calculate_delivery_date(DateTime $start_date, $days) {
 
     return $date;
 }
+
+// Calculate delivery date excluding weekends
+$delivery_date = new DateTime();
+$days_to_add = 3;
+while ($days_to_add > 0) {
+    $delivery_date->modify('+2 day');
+    if ($delivery_date->format('N') < 6) { // 1 (Monday) to 5 (Friday)
+        $days_to_add--;
+    }
+}
+$expected_delivery = $delivery_date->format('F j, Y');
 
 ?>
 <!DOCTYPE html>

@@ -4,7 +4,7 @@ require 'includes/dbconnect.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    echo json_encode(['success' => false, 'message' => 'User not logged in.']);
     exit();
 }
 
@@ -56,22 +56,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insert_stmt->close();
             }
 
-            // Redirect to cart
-            header("Location: cart.php");
+            echo json_encode(['success' => true, 'message' => 'Product added to cart successfully.']);
             exit();
         } else {
             $stmt->close();
             // Product not found
-            header("Location: productview.php?error=Product not found");
+            echo json_encode(['success' => false, 'message' => 'Product not found.']);
             exit();
         }
     } else {
         // Invalid input
-        header("Location: productview.php?error=Invalid input");
+        echo json_encode(['success' => false, 'message' => 'Invalid input.']);
         exit();
     }
 } else {
-    header("Location: productview.php");
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit();
 }
 ?>

@@ -4,15 +4,6 @@ require 'includes/dbconnect.php';
 
 $cart = $_SESSION['cart'] ?? [];
 
-// Sample display of cart items
-// if (!empty($cart)) {
-//     foreach ($cart as $productId => $quantity) {
-//         echo "Product ID: $productId, Quantity: $quantity<br>";
-//     }
-// } else {
-//     echo "Your cart is empty.";
-// }
-
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -55,10 +46,11 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// Define tax rate
-$tax_rate = 0.05;
-$tax = $total_cart * $tax_rate;
-$total = $total_cart + $tax;
+// Define shipping fee
+$shipping_fee = 50;
+
+// Calculate the total
+$total = $total_cart + $shipping_fee;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,7 +119,7 @@ $total = $total_cart + $tax;
                         <h5 class="card-title">Cart Summary</h5>
                         <p class="card-text">
                             <strong>Grand Total:</strong> ₱<?php echo number_format($total_cart, 2); ?><br>
-                            <strong>Tax (<?php echo $tax_rate * 100; ?>%):</strong> ₱<?php echo number_format($tax, 2); ?><br>
+                            <strong>Shipping Fee:</strong> ₱<?php echo number_format($shipping_fee, 2); ?><br>
                             <strong>Final Total:</strong> ₱<?php echo number_format($total, 2); ?>
                         </p>
                         <a href="checkout.php" class="btn btn-success w-100">Proceed to Checkout</a>
